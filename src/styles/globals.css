@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin 'tailwind-scrollbar' {
+  nocompatible: true;
+  preferredstrategy: 'pseudoelements';
+}
+
+@custom-variant dark (&:is(.dark *));
+
+@font-face {
+  font-family: 'Nasalization';
+  src: url('/fonts/nasalization/Nasalization.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme inline {
+  --font-nasalization: 'Nasalization', sans-serif;
+  --font-montserrat: 'Montserrat', sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brandSoft);
+  --color-brand-deep: var(--brandDeep);
+  --color-brand-muted: var(--brandMuted);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surfaceMuted);
+  --color-surface-strong: var(--surfaceStrong);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+
+  /* Base colors from theme */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  /* Card */
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+
+  /* Popover */
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+
+  /* Primary */
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+
+  /* Secondary */
+  --secondary: #e2e8f0;
+  --secondary-foreground: #0f172a;
+
+  /* Muted */
+  --muted: #eef2ff;
+  --muted-foreground: rgba(15, 23, 42, 0.6);
+
+  /* Accent */
+  --accent: #dbeafe;
+  --accent-foreground: #1d4ed8;
+
+  /* Destructive */
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  /* Border & Input */
+  --border: rgba(15, 23, 42, 0.2);
+  --input: rgba(15, 23, 42, 0.2);
+  --ring: rgba(37, 99, 235, 0.35);
+
+  /* Status Colors */
+  --warning: #f59e0b;
+  --warning-foreground: #7c2d12;
+  --success: #22c55e;
+  --success-foreground: #14532d;
+  --info: #0ea5e9;
+  --info-foreground: #0c4a6e;
+
+  /* Brand / Surface */
+  --brand: #3b82f6;
+  --brandSoft: #93c5fd;
+  --brandDeep: #1d4ed8;
+  --brandMuted: rgba(59, 130, 246, 0.35);
+  --surface: #e2e8f0;
+  --surfaceMuted: #cbd5e1;
+  --surfaceStrong: #94a3b8;
+
+  /* Chart Colors */
+  --chart-1: #2563eb;
+  --chart-2: #0ea5e9;
+  --chart-3: #22c55e;
+  --chart-4: #f59e0b;
+  --chart-5: #dc2626;
+
+  /* Sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #dbeafe;
+  --sidebar-accent-foreground: #1d4ed8;
+  --sidebar-border: rgba(15, 23, 42, 0.2);
+  --sidebar-ring: rgba(37, 99, 235, 0.35);
+}
+
+.dark {
+  --background: #0e0a17;
+  --foreground: #f5eaff;
+
+  /* Card */
+  --card: #2a2a2a;
+  --card-foreground: #f5eaff;
+
+  /* Popover */
+  --popover: #2a2a2a;
+  --popover-foreground: #f5eaff;
+
+  /* Primary */
+  --primary: #911dec;
+  --primary-foreground: #f5eaff;
+
+  /* Secondary */
+  --secondary: #2a2a2a;
+  --secondary-foreground: #f5eaff;
+
+  /* Muted */
+  --muted: #2a2a2a;
+  --muted-foreground: rgba(245, 234, 255, 0.6);
+
+  /* Accent */
+  --accent: #2a2a2a;
+  --accent-foreground: #f5eaff;
+
+  /* Destructive */
+  --destructive: #fa0c00;
+  --destructive-foreground: #f5eaff;
+
+  /* Border & Input */
+  --border: rgba(245, 234, 255, 0.1);
+  --input: rgba(245, 234, 255, 0.15);
+  --ring: rgba(245, 234, 255, 0.3);
+
+  /* Status Colors */
+  --warning: #feca13;
+  --warning-foreground: #feca1322;
+  --success: #28de25;
+  --success-foreground: #28de2522;
+  --info: #04b4fc;
+  --info-foreground: #04b4fc22;
+
+  /* Brand / Surface */
+  --brand: #873ae3;
+  --brandSoft: #d3aee9;
+  --brandDeep: #4a207d;
+  --brandMuted: rgba(123, 83, 171, 0.6);
+  --surface: #393054;
+  --surfaceMuted: #302443;
+  --surfaceStrong: #332a55;
+
+  /* Chart Colors */
+  --chart-1: #911dec;
+  --chart-2: #04b4fc;
+  --chart-3: #28de25;
+  --chart-4: #feca13;
+  --chart-5: #fa0c00;
+
+  /* Sidebar */
+  --sidebar: #2a2a2a;
+  --sidebar-foreground: #f5eaff;
+  --sidebar-primary: #911dec;
+  --sidebar-primary-foreground: #f5eaff;
+  --sidebar-accent: #2a2a2a;
+  --sidebar-accent-foreground: #f5eaff;
+  --sidebar-border: rgba(245, 234, 255, 0.1);
+  --sidebar-ring: rgba(245, 234, 255, 0.3);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+  }
+}
+
+.animate-logo {
+  animation: floating 4s linear infinite;
+}
+.animate-logo-10s {
+  animation: floating 10s linear infinite;
+}
+.animate-logo-6s {
+  animation: floating 6s linear infinite;
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+  25% {
+    transform: translateY(-25px);
+  }
+  50% {
+    transform: translateY(0px);
+  }
+  75% {
+    transform: translateY(25px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotationReverse {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+.rotation-3 {
+  animation: rotation 3s linear infinite;
+}
+
+.rotation-5 {
+  animation: rotation 5s linear infinite;
+}
+
+.rotation-10 {
+  animation: rotation 10s linear infinite;
+}
+
+.rotation-15 {
+  animation: rotation 15s linear infinite;
+}
+
+.rotation-15-reverse {
+  animation: rotationReverse 15s linear infinite;
+}
+
+.rotation-20 {
+  animation: rotation 30s linear infinite;
+}
+
+.rotation-20-reverse {
+  animation: rotationReverse 30s linear infinite;
+}
+
+/* Animation Control Classes */
+.animate-play {
+  animation-play-state: running;
+}
+
+.animate-pause {
+  animation-play-state: paused;
+}
+
+/* Motion-safe variants for accessibility */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-safe-animate-play {
+    animation-play-state: running;
+  }
+
+  .motion-safe-animate-pause {
+    animation-play-state: paused;
+  }
+}
