@@ -1,14 +1,11 @@
-type MenuType = "dashboard" | "achievements" | "events";
+import {
+  adminNavItems,
+  type AdminMenuId,
+} from "../../configs/admin-nav.config";
 
 type AdminSidebarProps = {
-  activeMenu: MenuType;
+  activeMenu: AdminMenuId;
 };
-
-const menuItems: { id: MenuType; label: string }[] = [
-  { id: "dashboard", label: "DASHBOARD" },
-  { id: "achievements", label: "ACHIEVEMENTS" },
-  { id: "events", label: "EVENTS" },
-];
 
 export default function AdminSidebar({
   activeMenu,
@@ -24,7 +21,7 @@ export default function AdminSidebar({
       </div>
 
       <nav className="flex flex-col items-center gap-5">
-        {menuItems.map((item) => {
+        {adminNavItems.map((item) => {
           const isActive = activeMenu === item.id;
 
           return (
@@ -43,7 +40,7 @@ export default function AdminSidebar({
                 }
               `}
             >
-              <span className="text-center text-2xl font-extrabold text-violet-200 [text-shadow:_0_4px_4px_rgb(0_0_0_/_0.25)]">
+              <span className="text-2xl font-extrabold text-violet-200 [text-shadow:_0_4px_4px_rgb(0_0_0_/_0.25)]">
                 {item.label}
               </span>
             </div>
