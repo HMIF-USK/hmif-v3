@@ -1,7 +1,7 @@
 import {
   adminNavItems,
   type AdminMenuId,
-} from "../../configs/admin-nav.config";
+} from "../../../../configs/admin-nav.config";
 
 type AdminSidebarProps = {
   activeMenu: AdminMenuId;
@@ -11,8 +11,20 @@ export default function AdminSidebar({
   activeMenu,
 }: AdminSidebarProps) {
   return (
-    <aside className="flex h-[837.36px] w-80 flex-col items-center rounded-[20px] border border-slate-400 bg-zinc-500/20 shadow-[0_10px_13.6px_rgba(0,0,0,0.25)] backdrop-blur-[6.5px]">
-      <div className="my-5 h-60 w-72 overflow-hidden rounded-[10px] border border-slate-400 bg-zinc-500/20 shadow-[0_10px_13.6px_rgba(0,0,0,0.25)] backdrop-blur-[6.5px]">
+    <aside className="flex min-h-full w-80 flex-col items-center rounded-[20px] border border-white/20
+
+        bg-white/10
+
+        backdrop-blur-xl
+
+        shadow-[0_8px_32px_rgba(0,0,0,0.35)]">
+      <div className="my-5 h-60 w-72 overflow-hidden rounded-[10px] border border-white/20
+
+        bg-white/10
+
+        backdrop-blur-xl
+
+        shadow-[0_8px_32px_rgba(0,0,0,0.35)]">
         <img
           //src="/images/hinata_mantap.jpg"
           //alt="Admin profile"
@@ -29,9 +41,13 @@ export default function AdminSidebar({
               key={item.id}
               className={`
                 flex h-16 w-72 items-center justify-center
-                rounded-[10px] border border-slate-400
-                shadow-[0_13px_13.6px_rgba(0,0,0,0.25),inset_0_4px_4px_rgba(0,0,0,0.25)]
-                backdrop-blur-[6.5px]
+                rounded-[10px] border border-white/20
+
+        bg-white/10
+
+        backdrop-blur-xl
+
+        shadow-[0_8px_32px_rgba(0,0,0,0.35)]
                 transition-all duration-300
                 ${
                   isActive
