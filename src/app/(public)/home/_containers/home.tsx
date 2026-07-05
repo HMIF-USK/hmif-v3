@@ -8,7 +8,6 @@ import Events from '@/components/sections/public/home/event/Event';
 import HeroSection from '@/components/sections/public/home/hero';
 import Department from '@/components/sections/public/home/department/Department';
 import Merch from '@/components/sections/public/home/merch/Merch';
-import InformaticsClub from '@/components/sections/public/home/informatics-club/InformaticsClub';
 import Contact from '@/components/sections/public/home/contact/Contact';
 
 const Teserract = dynamic(() => import('@/components/svg/hero/teserract'), { ssr: false });
@@ -195,7 +194,6 @@ export default function ContainerHome() {
             </Marquee>
           </div>
           <Merch />
-          <InformaticsClub />
           <Contact />
         </div>
       </main>
