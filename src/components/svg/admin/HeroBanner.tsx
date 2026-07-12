@@ -9,7 +9,7 @@ const HeroBanner = (props: SVGProps<SVGSVGElement>) => {
       fill="none" 
       xmlns="http://www.w3.org/2000/svg" 
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      {...props} // Supaya bisa menerima props tambahan (seperti className, onClick, dll)
+      {...props} 
     >
       <g clipPath="url(#clip0_1_1187)">
         <rect width="1512" height="970" rx="30" fill="#0E0A17"/>

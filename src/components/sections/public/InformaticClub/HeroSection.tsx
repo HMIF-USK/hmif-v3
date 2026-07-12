@@ -7,7 +7,6 @@ const HeroSectionInformaticClub = () => {
     return (
         <section className="relative w-full min-h-screen bg-[#07040d] flex flex-col justify-center items-center overflow-hidden select-none px-4">
       
-          {/* BACKGROUND UTAMA (z-0) */}
           <div 
             className="absolute inset-0 z-0 pointer-events-none"
             style={{
@@ -15,7 +14,6 @@ const HeroSectionInformaticClub = () => {
             }}
           />
 
-          {/* 1. TOMBOL KEMBALI (z-30) */}
           <div className="absolute top-8 left-6 md:left-10 z-30 flex items-center w-full">
             <a 
               href="#" 
@@ -30,9 +28,6 @@ const HeroSectionInformaticClub = () => {
           {/* 2. AREA UTAMA TEKS DENGAN SVG DI DALAMNYA (z-20) */}
           <div className="relative z-20 w-full max-w-[1100px] flex flex-col items-center justify-center text-center mt-12 mb-28">
             
-            {/* ======================================================== */}
-            {/* SVG DOUBLE RING  */}
-            {/* ======================================================== */}
             <div 
               className="absolute z-10 pointer-events-none w-[200px] sm:w-[280px] md:w-[380px] opacity-90 transform -translate-x-1/2"
               style={{ 
@@ -43,9 +38,6 @@ const HeroSectionInformaticClub = () => {
               <DoubleRing />
             </div>
 
-            {/* ======================================================== */}
-            {/* SVG ONE RING */}
-            {/* ======================================================== */}
             <div 
               className="absolute z-10 pointer-events-none w-[180px] sm:w-[240px] md:w-[320px] opacity-90 transform -translate-x-1/2"
               style={{ 
@@ -75,9 +67,7 @@ const HeroSectionInformaticClub = () => {
             </h1>
           </div>
 
-          {/* 3. EFEK CAHAYA (Diturunkan sedikit ke bottom-[8%] agar pas di bawah teks) */}
           <div className="absolute bottom-[10%] left-0 right-0 pointer-events-none flex flex-col items-center justify-center z-10">
-            {/* Pendaran Cahaya Violet */}
             <div 
               className="absolute w-full sm:w-[95%] md:w-[90%] h-[150px] opacity-85 blur-[40px] z-10 transform scale-y-[0.38]"
               style={{
@@ -85,10 +75,8 @@ const HeroSectionInformaticClub = () => {
               }}
             />
             
-            {/* Inti Garis Putih */}
             <div className="absolute w-[45%] sm:w-[35%] md:w-[30%] h-[3.2px] bg-gradient-to-r from-transparent via-[#ffffff] to-transparent opacity-100 z-30" />
             
-            {/* Aura Glow Garis Putih */}
             <div className="absolute w-[50%] sm:w-[40%] md:w-[30%] h-[8px] bg-gradient-to-r from-transparent via-[#d8b4fe] to-transparent opacity-95 blur-[2.5px] z-20" />
           </div>
 

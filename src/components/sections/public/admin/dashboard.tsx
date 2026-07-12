@@ -10,23 +10,18 @@ export const DocumentationForm: React.FC = () => {
   };
 
   return (
-    // -- Container Luar (Style Kaca Pas Sesuai Layout) --
     <div className="w-full max-w-[920px] rounded-[20px] border border-slate-400 bg-zinc-500/20 shadow-[0_10px_13.6px_rgba(0,0,0,0.25)] backdrop-blur-[6.5px] p-8 font-sans text-white">
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        
-        {/* === SECTION 1: AREA UPLOAD === */}
+      
         <div className="relative mt-8"> 
           
-          {/* TAB LABEL "DOKUMENTASI" - Potongan miring pendek di kanan, tidak terlalu ke kiri */}
           <div className="absolute top-0 left-0 -translate-y-full inline-block h-[30px] w-[195px] z-10">
-            {/* Layer Luar (Garis Tepi / Border) */}
             <div 
               style={{ 
                 clipPath: 'polygon(0% 100%, 0% 0%, 55% 0%, 66% 40%, 66% 100%)' 
               }}
               className="absolute inset-0 bg-[#8F83E7]"
             >
-              {/* Layer Dalam (Isi Gradasi Ungu Indigo) */}
               <div 
                 style={{ 
                   clipPath: 'polygon(0% 100%, 0% 0%, 79.5% 0%, 100% 29.5%, 100% 100%)' 
@@ -38,10 +33,8 @@ export const DocumentationForm: React.FC = () => {
             </div>
           </div>
           
-          {/* Area Kotak Tempat Upload */}
           <div className="rounded-r-[10px] rounded-b-[10px] rounded-tl-none backdrop-blur-[6.5px] border border-slate-400 bg-zinc-500/10 min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
             
-            {/* === ICON UPLOAD RE-DESIGNED === */}
             <div className="w-36 h-36 text-[#C4A6E8]/8 relative mb-4 flex items-center justify-center">
               <svg className="w-full h-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path 
@@ -68,7 +61,6 @@ export const DocumentationForm: React.FC = () => {
               </svg>
             </div>
 
-            {/* TOMBOL UPLOAD DENGAN GAYA DOUBLE BORDER & EFEK CAHAYA ELIPS */}
             <div className="relative flex items-center justify-center">
               <div className="absolute bg-[#8B48F6]/28 blur-xl rounded-full pointer-events-none" />
               <div className="relative p-[4px] rounded-full border border-[#8B48F6]/40 bg-[#7300FF47] flex items-center justify-center shadow-[0_0_15px_rgba(112,41,227,0.2)] z-10">
@@ -84,24 +76,20 @@ export const DocumentationForm: React.FC = () => {
           </div>
         </div>
 
-        {/* === SECTION 2: FORM UTAMA === */}
         <div className="relative w-full min-h-[190px]">
           
-          {/* Layer 1: Garis Border Ungu Siku */}
           <div 
             style={{ 
               clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 52px), calc(100% - 174px) calc(100% - 52px), calc(100% - 174px) 100%, 0 100%)',
             }}
             className="absolute inset-0 bg-[#8B5CF6]/40 rounded-[18px]"
           >
-            {/* Layer 2: Isi Gradasi */}
             <div 
               style={{ 
                 clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 51px), calc(100% - 173px) calc(100% - 51px), calc(100% - 173px) 100%, 0 100%)'
               }}
               className="absolute inset-[1px] bg-gradient-to-b from-[#873AE3] from-[50%] to-[#4A207D] rounded-[17px] border border-[#E19FFF] p-6 flex flex-col gap-4"
             >
-              {/* Input Nama Kegiatan */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-white text-xs font-medium">Nama Kegiatan</label>
                 <input 
@@ -112,7 +100,6 @@ export const DocumentationForm: React.FC = () => {
                 />
               </div>
 
-              {/* Dropdown Departemen */}
               <div className="flex flex-col gap-1.5 w-full max-w-[340px]">
                 <label className="text-white text-xs font-medium">Departemen</label>
                 <div className="relative">
@@ -140,7 +127,6 @@ export const DocumentationForm: React.FC = () => {
             </div>
           </div>
 
-          {/* === TOMBOL SUBMIT === */}
           <div className="absolute bottom-0 right-0 w-[169px] h-[48px] bg-transparent border-t-4 border-l-4 border-transparent rounded-tl-[16px] rounded-br-[18px]">
             <button 
               type="submit" 
