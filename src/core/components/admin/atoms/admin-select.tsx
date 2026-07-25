@@ -49,8 +49,8 @@ export default function AdminSelect({
 
           px-5
 
-          text-white
-          placeholder:text-white/40
+          text-[#E4D1FF]
+          placeholder:text-[#E4D1FF]/50
 
           focus:ring-2
           focus:ring-fuchsia-300/30

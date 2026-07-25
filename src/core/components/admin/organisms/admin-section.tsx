@@ -17,11 +17,11 @@ export default function AdminSection({
       className={clsx(
         `
         relative
+        w-full
         overflow-hidden
         rounded-[20px]
         border
         backdrop-blur-[6.5px]
-        shadow-[0_10px_13.6px_rgba(0,0,0,0.25)]
         `,
         className
       )}

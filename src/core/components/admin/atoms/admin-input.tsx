@@ -22,8 +22,8 @@ const AdminInput = forwardRef<HTMLInputElement, AdminInputProps>(
           px-5
 
           font-semibold
-          text-white
-          placeholder:text-white/40
+          text-[#E4D1FF]
+          placeholder:text-[#E4D1FF]/50
 
           outline-none
 
