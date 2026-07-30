@@ -18,7 +18,7 @@ export const achievementSchema = z.object({
   lokasiEvent: z.string().min(1, "Lokasi event wajib diisi"),
   tingkat: z.string().min(1, "Tingkat wajib dipilih"),
   tanggalMulai: z.string().min(1, "Tanggal mulai wajib diisi"),
-  tanggalSelesai: z.string().min(1, "Tanggal selesai wajib diisi"),
+  tanggalSelesai: z.string().min(1, "Tanggal selesai wajib diisi"), 
   description: z.string().min(1, "Deskripsi kegiatan wajib diisi"),
 });
 
