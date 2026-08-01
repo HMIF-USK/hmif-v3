@@ -1,5 +1,5 @@
 "use client"
-import HeroSectionInformaticClub from "@/components/sections/public/InformaticClub/HeroSection"
+import HeroSectionInformaticClub from "@/components/sections/public/home/informatics-club/HeroSection"
 const InformaticsClubContainer = () => {
   return(
     

@@ -1,5 +1,5 @@
 import React from 'react';
-// Menggunakan Path Alias Next.js untuk akurasi jalur folder
+
 import DoubleRing from '@/components/svg/informatics-club/DoubleRing';
 import OneRing from '@/components/svg/informatics-club/OneRing';
 
@@ -17,21 +17,20 @@ const HeroSectionInformaticClub = () => {
           <div className="absolute top-8 left-6 md:left-10 z-30 flex items-center w-full">
             <a 
               href="#" 
-              className="px-6 py-1.5 text-[11px] font-medium tracking-wide text-[#b1a0d7] bg-[#221633] border border-[#3b2a54] rounded-full hover:bg-[#34224d] transition-all whitespace-nowrap"
-              style={{ fontFamily: 'sans-serif' }}
+              className="px-6 py-1.5 text-[14px] tracking-wide text-[#FFFFFF] bg-[#302443] border border-[#3b2a54] rounded-full hover:bg-[#51436A] transition-all whitespace-nowrap"
+              style={{ fontFamily: 'poppins' }}
             >
               Kembali
             </a>
-            <div className="h-[1px] bg-gradient-to-r from-[#3d2b5c] via-[#1a102f] to-transparent w-[35%] ml-4 hidden sm:block" />
+            <div className="h-[2px] bg-gradient-to-r from-[#3d2b5c] via-[#1a102f] to-transparent w-[50%] hidden sm:block" />
           </div>
-
-          {/* 2. AREA UTAMA TEKS DENGAN SVG DI DALAMNYA (z-20) */}
+          
           <div className="relative z-20 w-full max-w-[1100px] flex flex-col items-center justify-center text-center mt-12 mb-28">
             
             <div 
               className="absolute z-10 pointer-events-none w-[200px] sm:w-[280px] md:w-[380px] opacity-90 transform -translate-x-1/2"
               style={{ 
-                left: '22%', 
+                left: '30%', 
                 top: '-3px' 
               }}
             >
@@ -41,8 +40,8 @@ const HeroSectionInformaticClub = () => {
             <div 
               className="absolute z-10 pointer-events-none w-[180px] sm:w-[240px] md:w-[320px] opacity-90 transform -translate-x-1/2"
               style={{ 
-                left: '65%',  
-                top: '170px'  
+                left: '75%',  
+                top: '145px'  
               }}
             >
               <OneRing />
@@ -53,13 +52,13 @@ const HeroSectionInformaticClub = () => {
               style={{ fontFamily: "'Syne', 'Montserrat', sans-serif" }}
             >
               <span 
-                className="text-[11vw] md:text-[7rem] lg:text-[8rem] bg-gradient-to-b from-[#ffffff] via-[#e4e2e9] to-[#9994a5] bg-clip-text text-transparent block origin-center transform scale-y-[0.9] font-black"
+                className="text-[11vw] md:text-[7rem] lg:text-[8rem] bg-gradient-to-b from-[#ffffff] via-[#e4e2e9] to-[#5A4A7A] bg-clip-text text-transparent block origin-center transform scale-y-[0.9] font-black"
                 style={{ filter: 'drop-shadow(0px 8px 6px rgba(0,0,0,0.5))' }}
               >
                 INFORMATICS
               </span>
               <span 
-                className="text-[11vw] md:text-[7rem] lg:text-[8rem] bg-gradient-to-b from-[#ffffff] via-[#e4e2e9] to-[#9994a5] bg-clip-text text-transparent block origin-center transform scale-y-[0.9] font-black -mt-4 md:-mt-8"
+                className="text-[11vw] md:text-[7rem] lg:text-[8rem] bg-gradient-to-b from-[#ffffff] via-[#e4e2e9] to-[#5A4A7A] bg-clip-text text-transparent block origin-center transform scale-y-[0.9] font-black -mt-8 md:-mt-16 lg:-mt-15"
                 style={{ filter: 'drop-shadow(0px 8px 6px rgba(0,0,0,0.5))' }}
               >
                 CLUB
