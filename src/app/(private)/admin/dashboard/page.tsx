@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import { useMemo } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import clsx from "clsx";
+import { useMemo } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import clsx from 'clsx';
 
-import AdminContent from "@/core/components/admin/organisms/admin-content";
-import AdminUpload from "@/core/components/admin/molecules/admin-upload";
-import AdminField from "@/core/components/admin/molecules/admin-field";
-import AdminInput from "@/core/components/admin/atoms/admin-input";
-import AdminSelect from "@/core/components/admin/atoms/admin-select";
+import AdminContent from '@/core/components/admin/organisms/admin-content';
+import AdminUpload from '@/core/components/admin/molecules/admin-upload';
+import AdminField from '@/core/components/admin/molecules/admin-field';
+import AdminInput from '@/core/components/admin/atoms/admin-input';
+import AdminSelect from '@/core/components/admin/atoms/admin-select';
 
-import { dashboardSchema, DashboardFormValues } from "./schema";
+import { dashboardSchema, DashboardFormValues } from './schema';
 
 export default function DashboardPage() {
   const form = useForm<DashboardFormValues>({
     resolver: zodResolver(dashboardSchema),
     defaultValues: {
-      namaKegiatan: "",
-      departemen: "ppm",
+      namaKegiatan: '',
+      departemen: 'ppm',
     },
   });
 
-  const imageFile = form.watch("image");
+  const imageFile = form.watch('image');
 
   const preview = useMemo(() => {
     if (!imageFile || !(imageFile instanceof File)) return undefined;
@@ -36,16 +36,16 @@ export default function DashboardPage() {
       return data;
     },
     onSuccess: (data) => {
-      console.log("Successfully submitted!", data);
-      alert("Berhasil menyimpan data pencapaian!");
+      console.log('Successfully submitted!', data);
+      alert('Berhasil menyimpan data pencapaian!');
       form.reset({
-        namaKegiatan: "",
-        departemen: "ppm",
+        namaKegiatan: '',
+        departemen: 'ppm',
       });
     },
     onError: (error) => {
-      console.error("Failed to submit", error);
-      alert("Terjadi kesalahan saat menyimpan data.");
+      console.error('Failed to submit', error);
+      alert('Terjadi kesalahan saat menyimpan data.');
     },
   });
 
@@ -53,9 +53,9 @@ export default function DashboardPage() {
     createDashboard.mutate(data);
   };
 
-  const bgGradient = "linear-gradient(180deg, #873AE3 0px, #4A207D 500px)";
+  const bgGradient = 'linear-gradient(180deg, #873AE3 0px, #4A207D 500px)';
   const highlightGradient =
-    "linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 150px)";
+    'linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 150px)';
 
   return (
     <AdminContent>
@@ -66,15 +66,9 @@ export default function DashboardPage() {
           name="image"
           render={({ field, fieldState }) => (
             <div className="flex flex-col gap-2">
-              <AdminUpload
-                title="Dokumentasi"
-                preview={preview}
-                onChange={field.onChange}
-              />
+              <AdminUpload title="Dokumentasi" preview={preview} onChange={field.onChange} />
               {fieldState.error && (
-                <span className="text-sm font-medium text-red-400">
-                  {fieldState.error.message}
-                </span>
+                <span className="text-sm font-medium text-red-400">{fieldState.error.message}</span>
               )}
             </div>
           )}
@@ -98,38 +92,37 @@ export default function DashboardPage() {
             style={{
               background: bgGradient,
               WebkitMaskImage:
-                "radial-gradient(circle at bottom right, transparent 19px, black 19.5px)",
-              WebkitMaskPosition: "bottom",
-              WebkitMaskSize: "21px 21px",
-              WebkitMaskRepeat: "no-repeat",
-              maskImage:
-                "radial-gradient(circle at bottom right, transparent 19px, black 19.5px)",
-              maskPosition: "bottom",
-              maskSize: "21px 21px",
-              maskRepeat: "no-repeat",
+                'radial-gradient(circle at bottom right, transparent 19px, black 19.5px)',
+              WebkitMaskPosition: 'bottom',
+              WebkitMaskSize: '21px 21px',
+              WebkitMaskRepeat: 'no-repeat',
+              maskImage: 'radial-gradient(circle at bottom right, transparent 19px, black 19.5px)',
+              maskPosition: 'bottom',
+              maskSize: '21px 21px',
+              maskRepeat: 'no-repeat',
             }}
           />
 
           {/* BORDER DIVS */}
           <div
             className="absolute top-0 left-0 right-[260px] bottom-0 rounded-l-[20px] border-t border-l border-b pointer-events-none"
-            style={{ borderColor: "#E19FFF" }}
+            style={{ borderColor: '#E19FFF' }}
           />
           <div
             className="absolute top-0 right-0 w-[260px] bottom-[116px] rounded-tr-[20px] border-t border-r pointer-events-none"
-            style={{ borderColor: "#E19FFF" }}
+            style={{ borderColor: '#E19FFF' }}
           />
           <div
             className="absolute right-0 bottom-[96px] w-[20px] h-[20px] rounded-br-[20px] border-r border-b pointer-events-none"
-            style={{ borderColor: "#E19FFF" }}
+            style={{ borderColor: '#E19FFF' }}
           />
           <div
             className="absolute right-[240px] bottom-0 w-[20px] h-[20px] rounded-br-[20px] border-r border-b pointer-events-none"
-            style={{ borderColor: "#E19FFF" }}
+            style={{ borderColor: '#E19FFF' }}
           />
           <div
             className="absolute right-[20px] bottom-[20px] w-[220px] h-[76px] rounded-tl-[20px] border-t border-l pointer-events-none"
-            style={{ borderColor: "#E19FFF" }}
+            style={{ borderColor: '#E19FFF' }}
           />
 
           {/* HIGHLIGHT OVERLAYS */}
@@ -154,7 +147,7 @@ export default function DashboardPage() {
                 <AdminInput
                   className="bg-transparent"
                   placeholder="Scrum Web Dev 1"
-                  {...form.register("namaKegiatan")}
+                  {...form.register('namaKegiatan')}
                 />
               </AdminField>
 
@@ -172,15 +165,15 @@ export default function DashboardPage() {
                       value={field.value}
                       onValueChange={field.onChange}
                       options={[
-                        { label: "DPH", value: "dph" },
-                        { label: "PPM", value: "ppm" },
-                        { label: "KOMINKRAF", value: "kominkraf" },
-                        { label: "PKM", value: "pkm" },
-                        { label: "SOSMAS", value: "sosmas" },
-                        { label: "HUAL", value: "hual" },
-                        { label: "MBA", value: "mba" },
-                        { label: "KEAGAMAAN", value: "keagamaan" },
-                        { label: "ADM", value: "adm" },
+                        { label: 'DPH', value: 'dph' },
+                        { label: 'PPM', value: 'ppm' },
+                        { label: 'KOMINKRAF', value: 'kominkraf' },
+                        { label: 'PKM', value: 'pkm' },
+                        { label: 'SOSMAS', value: 'sosmas' },
+                        { label: 'HUAL', value: 'hual' },
+                        { label: 'MBA', value: 'mba' },
+                        { label: 'KEAGAMAAN', value: 'keagamaan' },
+                        { label: 'ADM', value: 'adm' },
                       ]}
                     />
                   )}
@@ -217,12 +210,12 @@ export default function DashboardPage() {
                 disabled:hover:shadow-none
               `)}
               style={{
-                background: "#C8A7EF",
-                color: "#7300FF",
-                borderRadius: "18px 8px 18px 8px",
+                background: '#C8A7EF',
+                color: '#7300FF',
+                borderRadius: '18px 8px 18px 8px',
               }}
             >
-              {createDashboard.isPending ? "Menyimpan..." : "Submit"}
+              {createDashboard.isPending ? 'Menyimpan...' : 'Submit'}
             </button>
           </div>
         </section>
