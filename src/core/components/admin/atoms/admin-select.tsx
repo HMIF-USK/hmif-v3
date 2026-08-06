@@ -31,7 +31,10 @@ export default function AdminSelect({
   className,
 }: AdminSelectProps) {
   return (
-    <Select value={value} onValueChange={onValueChange}>
+    <Select
+      value={value}
+      onValueChange={onValueChange}
+    >
       <SelectTrigger
         className={clsx(
           `
@@ -46,12 +49,8 @@ export default function AdminSelect({
 
           px-5
 
-          font-poppins
-          font-semibold
-          text-[20px]
-
-          text-white/30
-          placeholder:text-white/30
+          text-[#E4D1FF]
+          placeholder:text-[#E4D1FF]/50
 
           focus:ring-2
           focus:ring-fuchsia-300/30
@@ -70,7 +69,6 @@ export default function AdminSelect({
           <SelectItem
             key={option.value}
             value={option.value}
-            className="font-poppins font-semibold text-[20px] text-white"
           >
             {option.label}
           </SelectItem>

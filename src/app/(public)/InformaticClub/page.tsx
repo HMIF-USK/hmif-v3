@@ -1,5 +1,9 @@
-import DivisionSection from './_containers/DivisionSection';
+import SharingKnowledge from "./_containers/SharingKnowledge";
 
-export default function DevisionSection() {
-  return <DivisionSection />;
+export default function InformaticClubPage() {
+  return (
+    <>
+      <SharingKnowledge />
+    </>
+  );
 }
