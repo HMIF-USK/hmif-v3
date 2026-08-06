@@ -82,13 +82,10 @@ const AppHeader: React.FC = () => {
       {/* Mobile AppHeader*/}
       <div className="lg:hidden w-full flex justify-center items-center px-7 box-border">
         <div
-          className={`flex flex-col box-border justify-between items-start rounded-xl h-[10%] min-h-10 max-h-16 fixed z-[151] duration-[0.3s] ${
-            !isScrollDown ? 'bottom-[3%]' : 'bottom-[-10%]'
-          } ${
-            width ? 'min-w-[88%] max-w-[88%] sm:min-w-[65%] sm:max-w-[65%]' : 'min-w-32 max-w-40'
-          } ${
-            height ? 'min-h-[80%] max-h-[80%]' : 'min-h-10 max-h-16'
-          } bg-surface-muted/50 py-4 border-brand/60 border-[1.8px] backdrop-blur-[5px]`}
+          className={`flex flex-col box-border justify-between items-start rounded-xl h-[10%] min-h-10 max-h-16 fixed z-[151] duration-[0.3s] ${!isScrollDown ? 'bottom-[3%]' : 'bottom-[-10%]'
+            } ${width ? 'min-w-[88%] max-w-[88%] sm:min-w-[65%] sm:max-w-[65%]' : 'min-w-32 max-w-40'
+            } ${height ? 'min-h-[80%] max-h-[80%]' : 'min-h-10 max-h-16'
+            } bg-surface-muted/50 py-4 border-brand/60 border-[1.8px] backdrop-blur-[5px]`}
         >
           <div className=" box-border px-7 h-[90%]">
             <ol className={`relative box-border ${listNav ? '' : 'hidden'}`}>
@@ -110,11 +107,19 @@ const AppHeader: React.FC = () => {
                   <time className="mb-1 text-sm font-bold leading-none text-white ">Merch</time>
                 </Link>
               </li> */}
-              <li className="ms-4">
+              <li className="mb-10 ms-4">
                 <div className="absolute w-3 h-3  rounded-full mt-1.5 -start-1.5 border border-white bg-white"></div>
                 <Link href={'/achievement'} onClick={() => handleClick()}>
                   <time className="mb-1 text-sm font-bold leading-none text-white ">
                     Achievement
+                  </time>
+                </Link>
+              </li>
+              <li className="ms-4">
+                <div className="absolute w-3 h-3  rounded-full mt-1.5 -start-1.5 border border-white bg-white"></div>
+                <Link href={'/informatic-club'} onClick={() => handleClick()}>
+                  <time className="mb-1 text-sm font-bold leading-none text-white ">
+                    Informatic Club
                   </time>
                 </Link>
               </li>
@@ -181,11 +186,10 @@ const AppHeader: React.FC = () => {
       </div>
 
       <div
-        className={`hidden lg:flex justify-center items-center fixed ${
-          !isScrollDown ? 'top-[3%]' : 'top-[-10%]'
-        } z-[151] w-screen h-16 font-poppins font-semibold duration-500`}
+        className={`hidden lg:flex justify-center items-center fixed ${!isScrollDown ? 'top-[3%]' : 'top-[-10%]'
+          } z-[151] w-screen h-16 font-poppins font-semibold duration-500`}
       >
-        <ul className="flex justify-evenly items-center  w-[88%] max-w-[1100px] lg:max-w-[800px] 2xl:w-[40%] bg-surface-muted/65 backdrop-blur-[5px] rounded-[12px] text-white font-semibold text-[12px] tracking-wide px-4 py-3 lg:text-sm">
+        <ul className="flex justify-evenly items-center  w-[88%] max-w-[1100px] lg:max-w-[950px] 2xl:w-[45%] bg-surface-muted/65 backdrop-blur-[5px] rounded-[12px] text-white font-semibold text-[12px] tracking-wide px-4 py-3 lg:text-sm">
           <li>
             <Link
               href={'/home'}
@@ -202,9 +206,8 @@ const AppHeader: React.FC = () => {
                 </h1>
               ) : (
                 <h1
-                  className={`text-[100%] absolute z-[160] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ${
-                    listHover === 1 ? 'text-surface-muted' : 'text-white'
-                  }`}
+                  className={`text-[100%] absolute z-[160] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ${listHover === 1 ? 'text-surface-muted' : 'text-white'
+                    }`}
                 >
                   Home
                 </h1>
@@ -214,9 +217,8 @@ const AppHeader: React.FC = () => {
                 <div className={`w-full h-full rounded-[10px] bg-white absolute `}></div>
               ) : (
                 <div
-                  className={` ${
-                    listHover === 1 ? 'w-full h-full duration-[0.3s]' : 'w-0 h-0 duration-[0.2s]'
-                  } rounded-[10px] bg-white absolute`}
+                  className={` ${listHover === 1 ? 'w-full h-full duration-[0.3s]' : 'w-0 h-0 duration-[0.2s]'
+                    } rounded-[10px] bg-white absolute`}
                 ></div>
               )}
             </Link>
@@ -237,9 +239,8 @@ const AppHeader: React.FC = () => {
                 </h1>
               ) : (
                 <h1
-                  className={`text-[100%] absolute z-[160] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ${
-                    listHover === 2 ? 'text-surface-muted' : 'text-white'
-                  }`}
+                  className={`text-[100%] absolute z-[160] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ${listHover === 2 ? 'text-surface-muted' : 'text-white'
+                    }`}
                 >
                   Event
                 </h1>
@@ -249,9 +250,8 @@ const AppHeader: React.FC = () => {
                 <div className={`w-full h-full rounded-[10px] bg-white absolute `}></div>
               ) : (
                 <div
-                  className={` ${
-                    listHover === 2 ? 'w-full h-full duration-[0.3s]' : 'w-0 h-0 duration-[0.2s]'
-                  } rounded-[10px] bg-white absolute`}
+                  className={` ${listHover === 2 ? 'w-full h-full duration-[0.3s]' : 'w-0 h-0 duration-[0.2s]'
+                    } rounded-[10px] bg-white absolute`}
                 ></div>
               )}
             </Link>
@@ -346,9 +346,8 @@ const AppHeader: React.FC = () => {
                 </h1>
               ) : (
                 <h1
-                  className={`text-[100%] absolute z-[160] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ${
-                    listHover === 5 ? 'text-surface-muted' : 'text-white'
-                  }`}
+                  className={`text-[100%] absolute z-[160] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ${listHover === 5 ? 'text-surface-muted' : 'text-white'
+                    }`}
                 >
                   Achievement
                 </h1>
@@ -358,9 +357,41 @@ const AppHeader: React.FC = () => {
                 <div className={`w-full h-full rounded-[10px] bg-white absolute`}></div>
               ) : (
                 <div
-                  className={` ${
-                    listHover === 5 ? 'w-full h-full duration-[0.3s]' : 'w-0 h-0 duration-[0.2s]'
-                  } rounded-[10px] bg-white absolute`}
+                  className={` ${listHover === 5 ? 'w-full h-full duration-[0.3s]' : 'w-0 h-0 duration-[0.2s]'
+                    } rounded-[10px] bg-white absolute`}
+                ></div>
+              )}
+            </Link>
+          </li>
+          <li>
+            <Link
+              href={'/informatic-club'}
+              onClick={() => setIsActiveSection(6)}
+              onMouseOver={() => setListHover(6)}
+              onMouseOut={() => setListHover(0)}
+              className="bg-surface-muted flex justify-center items-center min-w-[130px] md:min-w-[150px] h-[45px] text-center rounded-[10px] leading-[45px] relative"
+            >
+              {pathname.includes('informatic-club') ? (
+                <h1
+                  className={`text-[100%] absolute z-[160] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-surface-muted whitespace-nowrap`}
+                >
+                  Informatic Club
+                </h1>
+              ) : (
+                <h1
+                  className={`text-[100%] absolute z-[160] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ${listHover === 6 ? 'text-surface-muted' : 'text-white'
+                    } whitespace-nowrap`}
+                >
+                  Informatic Club
+                </h1>
+              )}
+
+              {pathname.includes('informatic-club') ? (
+                <div className={`w-full h-full rounded-[10px] bg-white absolute`}></div>
+              ) : (
+                <div
+                  className={` ${listHover === 6 ? 'w-full h-full duration-[0.3s]' : 'w-0 h-0 duration-[0.2s]'
+                    } rounded-[10px] bg-white absolute`}
                 ></div>
               )}
             </Link>

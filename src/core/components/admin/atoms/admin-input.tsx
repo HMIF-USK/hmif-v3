@@ -12,18 +12,17 @@ const AdminInput = forwardRef<HTMLInputElement, AdminInputProps>(
           `
           h-[60px]
           w-full
-
           rounded-xl
-
           border
-
           bg-white/10
-
           px-5
 
+           
+          font-poppins
           font-semibold
+          text-[20px]
           text-[#E4D1FF]
-          placeholder:text-[#E4D1FF]/50
+          placeholder:text-[#FEFEFE]/30
 
           outline-none
 
