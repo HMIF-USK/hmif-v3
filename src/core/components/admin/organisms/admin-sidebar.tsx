@@ -26,6 +26,8 @@ export default function AdminSidebar({
 
         shadow-[0_8px_32px_rgba(0,0,0,0.35)]">
         <img
+          //src="/images/hinata_mantap.jpg"
+          //alt="Admin profile"
           className="h-full w-full object-cover"
         />
       </div>

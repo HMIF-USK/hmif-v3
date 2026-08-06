@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import clsx from "clsx";
-import Image from "next/image";
 import uploadIcon from "@/app/(private)/admin/images/upload-icon.png";
 
 type AdminUploadProps = {
@@ -36,7 +35,7 @@ export default function AdminUpload({
   };
 
   return (
-    <div className="relative w-full">
+    <div className={clsx("relative", title ? "pt-[42px]" : "")}>
       <input
         hidden
         ref={inputRef}
@@ -45,38 +44,51 @@ export default function AdminUpload({
         onChange={handleChange}
       />
 
-      {/* Tab Label */}
+      {/* EVENT TITLE */}
       {title && (
-        <div className="relative h-[45px] w-fit min-w-[200px] z-10 pointer-events-none">
-          {/* Border Outer Layer */}
+        <div className="absolute top-0 left-[-1px] z-10 h-[44px] w-[185px] pointer-events-none">
+          {/* Border */}
           <div
             className="absolute inset-0"
             style={{
               backgroundColor: "#E19FFF",
               clipPath:
-                "polygon(0 0, calc(100% - 39px) 0, 100% 16px, 100% 100%, 0 100%)",
+                "polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%)",
             }}
           />
 
-          {/* Background Inner Layer */}
+          {/* Gradient */}
           <div
-            className="absolute top-[2px] left-[2px] right-[2px] bottom-0"
+            className="absolute top-[1px] left-[1px] right-[1px] bottom-0"
             style={{
               background:
                 "linear-gradient(180deg, #5033B7 0%, #7E73A4 100%)",
               clipPath:
-                "polygon(0 0, calc(100% - 38px) 0, 100% 15px, 100% 100%, 0 100%)",
+                "polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 0 100%)",
             }}
           />
 
-          {/* Content Layer */}
-          <div className="relative z-10 flex h-full items-center justify-start pl-6 pr-6 font-poppins font-semibold text-white text-[20px] tracking-wide">
+          {/* Title */}
+          <div
+            className="
+              relative
+              z-10
+              flex
+              h-[42px]
+              items-center
+              justify-center
+              font-poppins
+              font-bold
+              text-[18px]
+              text-white
+            "
+          >
             {title}
           </div>
         </div>
       )}
 
-      {/* Main Upload Box */}
+      {/* UPLOAD CONTAINER */}
       <div
         onClick={handleClick}
         className={clsx(
@@ -87,29 +99,50 @@ export default function AdminUpload({
           cursor-pointer
           overflow-hidden
           border
-          backdrop-blur-[6.5px]
+          backdrop-blur-[2px]
           transition-all
           duration-300
           hover:brightness-110
           `,
           title
-            ? "-mt-[2px] rounded-tr-[20px] rounded-b-[20px] rounded-tl-none"
+            ? "rounded-tr-[20px] rounded-b-[20px] rounded-tl-none"
             : "rounded-[20px]"
         )}
         style={{
           borderColor: "#E19FFF",
-          background: "rgba(255,255,255,.08)",
+          background: "rgba(255,255,255,0.06)",
         }}
       >
+        {/* PREVIEW */}
         {preview ? (
           <div className="group relative h-full w-full">
             <img
               src={preview}
               alt=""
-              className="h-full w-full object-cover transition-all duration-300 group-hover:brightness-50"
+              className="
+                h-full
+                w-full
+                object-cover
+                transition-all
+                duration-300
+                group-hover:brightness-50
+              "
             />
 
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            {/* CHANGE IMAGE */}
+            <div
+              className="
+                absolute
+                inset-0
+                flex
+                items-center
+                justify-center
+                opacity-0
+                transition-opacity
+                duration-300
+                group-hover:opacity-100
+              "
+            >
               <div
                 className="rounded-3xl border p-[10px]"
                 style={{
@@ -123,15 +156,29 @@ export default function AdminUpload({
                     background: "rgba(115,0,255,0.40)",
                   }}
                 >
-                  <p className="flex items-center gap-2 font-poppins font-semibold text-[20px] text-white">
+                  <p
+                    className="
+                      flex
+                      items-center
+                      gap-2
+                      font-poppins
+                      font-semibold
+                      text-xl
+                      text-white
+                    "
+                  >
                     Ganti Gambar
-                    <span className="text-2xl">↗</span>
+
+                    <span className="text-2xl">
+                      ↗
+                    </span>
                   </p>
                 </div>
               </div>
             </div>
           </div>
         ) : (
+          /* EMPTY STATE */
           <div
             className="
               flex
@@ -141,6 +188,7 @@ export default function AdminUpload({
               justify-center
             "
           >
+            {/* UPLOAD ICON */}
             <div
               className="
                 flex
@@ -157,6 +205,7 @@ export default function AdminUpload({
               />
             </div>
 
+            {/* UPLOAD BUTTON */}
             <div
               className="
                 mt-8
@@ -186,12 +235,15 @@ export default function AdminUpload({
                     gap-2
                     font-poppins
                     font-semibold
-                    text-[20px]
+                    text-xl
                     text-white
                   "
                 >
                   Upload Gambar Disini
-                  <span className="text-2xl">↗</span>
+
+                  <span className="text-2xl">
+                    ↗
+                  </span>
                 </p>
               </div>
             </div>

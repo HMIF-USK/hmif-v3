@@ -42,17 +42,17 @@ export default function AdminSection({
       {/* Content */}
       <div className="relative z-10 p-8">
         <h2 className="
-    bg-gradient-to-b
-    from-white/70
-    to-[rgba(119,51,200,0.8)]
+          bg-gradient-to-b
+          from-white/70
+          to-[rgba(119,51,200,0.8)]
 
-    bg-clip-text
-    text-transparent
-    font-bold
+          bg-clip-text
+          text-transparent
+          font-bold
 
-    uppercase
-    text-[48px]
-  ">
+          uppercase
+          text-[48px]
+        ">
           {title}
         </h2>
 
