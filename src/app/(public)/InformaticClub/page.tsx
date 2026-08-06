@@ -1,9 +1,5 @@
-import HeroSection from './_containers/informatic-club';
+import DivisionSection from './_containers/DivisionSection';
 
-export default function Page() {
-  return (
-    <main>
-      <HeroSection />
-    </main>
-  );
+export default function DevisionSection() {
+  return <DivisionSection />;
 }

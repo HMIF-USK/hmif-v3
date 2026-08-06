@@ -1,8 +1,7 @@
 const CardTwoInformaticsClub: React.FC = () => {
   return (
     <svg
-      width="460"
-      height="553"
+      className="w-full h-auto"
       viewBox="0 0 460 553"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
