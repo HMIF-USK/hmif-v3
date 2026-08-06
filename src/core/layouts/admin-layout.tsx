@@ -1,36 +1,31 @@
 import type { ReactNode } from "react";
-
+import heroBanner from "@/app/(private)/admin/images/HeroBanner.svg";
 import AdminSidebar from "@/core/components/admin/organisms/admin-sidebar";
 
 type AdminLayoutProps = {
   children: ReactNode;
 };
 
-export default function AdminLayout({
-  children,
-}: AdminLayoutProps) {
+export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <div
       className="
         flex
         h-screen
         overflow-hidden
-
-        bg-[url('/images/admin/hero-banner.svg')]
         bg-cover
-        bg-center
         bg-no-repeat
       "
+      style={{
+        backgroundImage: `url(${heroBanner.src})`,
+        backgroundPosition: "center 43%",
+      }}
     >
-      {/* Sidebar */}
       <aside className="sticky top-0 h-screen shrink-0 p-8">
-        <AdminSidebar activeMenu="achievements" />
+        <AdminSidebar activeMenu="dashboard" />
       </aside>
 
-      {/* Content */}
-      <main className="flex-1 overflow-y-auto p-8">
-        {children}
-      </main>
+      <main className="flex-1 overflow-y-auto p-8">{children}</main>
     </div>
   );
 }
