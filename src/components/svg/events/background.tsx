@@ -10,7 +10,7 @@ const backgroundEvent: React.FC = () => {
       <path
         d="M1510 789H-11V0H1510V789Z"
         fill="url(#paint0_radial_14_203)"
-        fill-opacity="0.5"
+        fillOpacity="0.5"
       />
       <mask
         id="mask0_14_203"
@@ -428,7 +428,7 @@ const backgroundEvent: React.FC = () => {
           />
         </g>
         <g style={{ mixBlendMode: "overlay" }}>
-          <path d="M-11 501.015H1510" stroke="white" stroke-miterlimit="10" />
+          <path d="M-11 501.015H1510" stroke="white" strokeMiterlimit="10" />
         </g>
         <path
           style={{ mixBlendMode: "screen" }}
@@ -441,7 +441,7 @@ const backgroundEvent: React.FC = () => {
           style={{ mixBlendMode: "screen" }}
           d="M1428.68 501.015C1428.68 526.105 1124.68 546.461 749.5 546.461C374.32 546.461 70.3228 526.105 70.3228 501.015C70.3228 475.925 374.32 455.569 749.5 455.569C1124.68 455.569 1428.68 475.925 1428.68 501.015Z"
           fill="url(#paint31_radial_14_203)"
-          fill-opacity="0.5"
+          fillOpacity="0.5"
         />
       </g>
       <defs>
@@ -453,8 +453,8 @@ const backgroundEvent: React.FC = () => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(749.5 394.5) scale(1053.63 375.241)"
         >
-          <stop stop-color="#AE4CFF" stop-opacity="0.5" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="#AE4CFF" stopOpacity="0.5" />
+          <stop offset="1" stopColor="#070322" />
         </radialGradient>
         <radialGradient
           id="paint1_radial_14_203"
@@ -464,8 +464,8 @@ const backgroundEvent: React.FC = () => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(749.5 394.5) scale(1080.04 347.685)"
         >
-          <stop offset="0.01" stop-color="#7320E3" stop-opacity="0.2" />
-          <stop offset="1" stop-opacity="0" />
+          <stop offset="0.01" stopColor="#7320E3" stopOpacity="0.2" />
+          <stop offset="1" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint2_radial_14_203"
@@ -475,8 +475,8 @@ const backgroundEvent: React.FC = () => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(749.5 676.962) rotate(180) scale(1031.36 211.906)"
         >
-          <stop offset="0.01" stop-color="#AE4CFF" stop-opacity="0.5" />
-          <stop offset="1" stop-opacity="0" />
+          <stop offset="0.01" stopColor="#AE4CFF" stopOpacity="0.5" />
+          <stop offset="1" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint3_linear_14_203"
@@ -486,8 +486,8 @@ const backgroundEvent: React.FC = () => {
           y2="795.022"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_14_203"
@@ -497,8 +497,8 @@ const backgroundEvent: React.FC = () => {
           y2="794.972"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_14_203"
@@ -508,8 +508,8 @@ const backgroundEvent: React.FC = () => {
           y2="794.897"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint6_linear_14_203"
@@ -519,8 +519,8 @@ const backgroundEvent: React.FC = () => {
           y2="794.777"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint7_linear_14_203"
@@ -530,8 +530,8 @@ const backgroundEvent: React.FC = () => {
           y2="794.57"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint8_linear_14_203"
@@ -541,8 +541,8 @@ const backgroundEvent: React.FC = () => {
           y2="794.164"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint9_linear_14_203"
@@ -552,8 +552,8 @@ const backgroundEvent: React.FC = () => {
           y2="793.186"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint10_linear_14_203"
@@ -563,8 +563,8 @@ const backgroundEvent: React.FC = () => {
           y2="789.734"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint11_linear_14_203"
@@ -574,8 +574,8 @@ const backgroundEvent: React.FC = () => {
           y2="754.07"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint12_linear_14_203"
@@ -585,8 +585,8 @@ const backgroundEvent: React.FC = () => {
           y2="754.07"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint13_linear_14_203"
@@ -596,8 +596,8 @@ const backgroundEvent: React.FC = () => {
           y2="789.734"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint14_linear_14_203"
@@ -607,8 +607,8 @@ const backgroundEvent: React.FC = () => {
           y2="793.186"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint15_linear_14_203"
@@ -618,8 +618,8 @@ const backgroundEvent: React.FC = () => {
           y2="794.164"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint16_linear_14_203"
@@ -629,8 +629,8 @@ const backgroundEvent: React.FC = () => {
           y2="794.57"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint17_linear_14_203"
@@ -640,8 +640,8 @@ const backgroundEvent: React.FC = () => {
           y2="794.777"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint18_linear_14_203"
@@ -651,8 +651,8 @@ const backgroundEvent: React.FC = () => {
           y2="794.897"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint19_linear_14_203"
@@ -662,8 +662,8 @@ const backgroundEvent: React.FC = () => {
           y2="794.972"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint20_linear_14_203"
@@ -673,8 +673,8 @@ const backgroundEvent: React.FC = () => {
           y2="795.022"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint21_linear_14_203"
@@ -684,8 +684,8 @@ const backgroundEvent: React.FC = () => {
           y2="795.058"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint22_linear_14_203"
@@ -695,8 +695,8 @@ const backgroundEvent: React.FC = () => {
           y2="795.083"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint23_linear_14_203"
@@ -706,8 +706,8 @@ const backgroundEvent: React.FC = () => {
           y2="795.103"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint24_linear_14_203"
@@ -717,8 +717,8 @@ const backgroundEvent: React.FC = () => {
           y2="795.118"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint25_linear_14_203"
@@ -728,8 +728,8 @@ const backgroundEvent: React.FC = () => {
           y2="795.129"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint26_linear_14_203"
@@ -739,8 +739,8 @@ const backgroundEvent: React.FC = () => {
           y2="795.139"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint27_linear_14_203"
@@ -750,8 +750,8 @@ const backgroundEvent: React.FC = () => {
           y2="795.146"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint28_linear_14_203"
@@ -761,8 +761,8 @@ const backgroundEvent: React.FC = () => {
           y2="795.153"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <linearGradient
           id="paint29_linear_14_203"
@@ -772,8 +772,8 @@ const backgroundEvent: React.FC = () => {
           y2="795.158"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#070322" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#070322" />
         </linearGradient>
         <radialGradient
           id="paint30_radial_14_203"
@@ -783,9 +783,9 @@ const backgroundEvent: React.FC = () => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(749.5 501.01) scale(760.624 14.9831)"
         >
-          <stop stop-color="white" />
-          <stop offset="0.231" stop-color="#651FFF" />
-          <stop offset="1" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="0.231" stopColor="#651FFF" />
+          <stop offset="1" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint31_radial_14_203"
@@ -795,9 +795,9 @@ const backgroundEvent: React.FC = () => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(749.5 501.01) scale(679.173 45.4574)"
         >
-          <stop stop-color="white" />
-          <stop offset="0.231" stop-color="#651FFF" />
-          <stop offset="1" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="0.231" stopColor="#651FFF" />
+          <stop offset="1" stopOpacity="0" />
         </radialGradient>
       </defs>
     </svg>

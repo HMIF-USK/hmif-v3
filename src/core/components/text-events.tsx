@@ -31,8 +31,8 @@ const TextEventComponent: React.FC = () => {
           y2="152.732"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#4D347E" />
-          <stop offset="1" stop-color="#5A4A7A" stop-opacity="0" />
+          <stop stopColor="#4D347E" />
+          <stop offset="1" stopColor="#5A4A7A" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_0_1"
@@ -42,8 +42,8 @@ const TextEventComponent: React.FC = () => {
           y2="163.47"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#614B8C" />
-          <stop offset="1" stop-color="#5A4A7A" stop-opacity="0" />
+          <stop stopColor="#614B8C" />
+          <stop offset="1" stopColor="#5A4A7A" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_0_1"
@@ -53,8 +53,8 @@ const TextEventComponent: React.FC = () => {
           y2="175.945"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#5A4A7A" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#5A4A7A" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_0_1"
@@ -64,8 +64,8 @@ const TextEventComponent: React.FC = () => {
           y2="175.945"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="#5A4A7A" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="#5A4A7A" />
         </linearGradient>
       </defs>
     </svg>

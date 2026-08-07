@@ -100,8 +100,6 @@ const AchievementPageCard: React.FC<IAchievementPageCard> = ({ achievement, inde
             slidesPerView={1}
             loop={true}
             pagination={{ clickable: true }}
-            onSlideChange={(swiper) => console.log(swiper.realIndex)}
-            onSwiper={(swiper) => console.log(swiper)}
             modules={[Navigation, Pagination]}
             slidesPerGroup={1}
           >

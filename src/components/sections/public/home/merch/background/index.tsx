@@ -30,8 +30,8 @@ const BackgroundMerch: React.FC = () => {
           y2="784.959"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.31" stop-color="#493582" />
-          <stop offset="1" stop-color="#280D4A" />
+          <stop offset="0.31" stopColor="#493582" />
+          <stop offset="1" stopColor="#280D4A" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_17_874"
@@ -41,8 +41,8 @@ const BackgroundMerch: React.FC = () => {
           y2="915.626"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.31" stop-color="#493582" />
-          <stop offset="1" stop-color="#280D4A" />
+          <stop offset="0.31" stopColor="#493582" />
+          <stop offset="1" stopColor="#280D4A" />
         </linearGradient>
       </defs>
     </svg>

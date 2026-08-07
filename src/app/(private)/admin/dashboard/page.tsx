@@ -1,9 +1,9 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 
 import AdminContent from '@/core/components/admin/organisms/admin-content';
@@ -11,6 +11,19 @@ import AdminUpload from '@/core/components/admin/molecules/admin-upload';
 import AdminField from '@/core/components/admin/molecules/admin-field';
 import AdminInput from '@/core/components/admin/atoms/admin-input';
 import AdminSelect from '@/core/components/admin/atoms/admin-select';
+
+import AdminTextarea from '@/core/components/admin/atoms/admin-textarea';
+import AdminList from '@/core/components/admin/organisms/admin-list';
+
+import {
+  useActivities,
+  useCreateActivity,
+  useDeleteActivity,
+  useUpdateActivity,
+} from '@/services/hmif/hmif.query';
+import { prokerStatusFromRange } from '@/services/hmif/hmif.mapper';
+import { toIsoDate, uploadImage } from '@/utils/cloudinary.util';
+import { getMe } from '@/services/auth/auth.store';
 
 import { dashboardSchema, DashboardFormValues } from './schema';
 
@@ -20,6 +33,10 @@ export default function DashboardPage() {
     defaultValues: {
       namaKegiatan: '',
       departemen: 'ppm',
+      lokasi: '',
+      tanggalMulai: '',
+      tanggalSelesai: '',
+      description: '',
     },
   });
 
@@ -30,27 +47,72 @@ export default function DashboardPage() {
     return URL.createObjectURL(imageFile);
   }, [imageFile]);
 
-  const createDashboard = useMutation({
-    mutationFn: async (data: DashboardFormValues) => {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      return data;
-    },
-    onSuccess: (data) => {
-      console.log('Successfully submitted!', data);
-      alert('Berhasil menyimpan data pencapaian!');
-      form.reset({
-        namaKegiatan: '',
-        departemen: 'ppm',
-      });
-    },
-    onError: (error) => {
-      console.error('Failed to submit', error);
-      alert('Terjadi kesalahan saat menyimpan data.');
-    },
-  });
+  const [editingId, setEditingId] = useState<string | null>(null);
 
-  const onSubmit = (data: DashboardFormValues) => {
-    createDashboard.mutate(data);
+  const { data: me } = useQuery({ queryKey: ['me'], queryFn: () => getMe() });
+  const { data: activities = [], isLoading, error } = useActivities();
+
+  const createActivity = useCreateActivity();
+  const updateActivity = useUpdateActivity();
+  const deleteActivity = useDeleteActivity();
+
+  const isMutating =
+    createActivity.isPending || updateActivity.isPending || deleteActivity.isPending;
+
+  const buildPayload = async (data: DashboardFormValues) => {
+    const event_start = toIsoDate(data.tanggalMulai);
+    const event_end = toIsoDate(data.tanggalSelesai);
+
+    return {
+      title: data.namaKegiatan,
+      description: data.description,
+      division: data.departemen,
+      location: data.lokasi,
+      status: prokerStatusFromRange(event_start, event_end),
+      event_start,
+      event_end,
+      created_by_user_id: me?.id ?? '',
+      photos: data.image instanceof File ? [await uploadImage(data.image)] : [],
+    };
+  };
+
+  const onSubmit = async (data: DashboardFormValues) => {
+    if (!me?.id) {
+      alert('Sesi tidak ditemukan, silakan login ulang.');
+      return;
+    }
+
+    try {
+      const payload = await buildPayload(data);
+
+      if (editingId) {
+        await updateActivity.mutateAsync({ id: editingId, payload });
+        setEditingId(null);
+      } else {
+        await createActivity.mutateAsync(payload);
+      }
+
+      form.reset({ namaKegiatan: '', departemen: 'ppm', lokasi: '', tanggalMulai: '', tanggalSelesai: '', description: '' });
+      alert('Berhasil menyimpan data kegiatan!');
+    } catch (err) {
+      alert((err as Error).message || 'Terjadi kesalahan saat menyimpan data.');
+    }
+  };
+
+  const handleEdit = (id: string) => {
+    const activity = activities.find((item) => item.id === id);
+    if (!activity) return;
+
+    setEditingId(id);
+    form.reset({
+      namaKegiatan: activity.title,
+      departemen: activity.division,
+      lokasi: activity.location,
+      tanggalMulai: activity.event_start.slice(0, 10),
+      tanggalSelesai: activity.event_end.slice(0, 10),
+      description: activity.description,
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const bgGradient = 'linear-gradient(180deg, #873AE3 0px, #4A207D 500px)';
@@ -179,6 +241,45 @@ export default function DashboardPage() {
                   )}
                 />
               </AdminField>
+
+              <AdminField label="Lokasi" required error={form.formState.errors.lokasi?.message}>
+                <AdminInput
+                  className="bg-transparent"
+                  placeholder="Ruang Seminar FMIPA"
+                  {...form.register('lokasi')}
+                />
+              </AdminField>
+
+              <AdminField
+                label="Tanggal Mulai"
+                required
+                error={form.formState.errors.tanggalMulai?.message}
+              >
+                <AdminInput className="bg-transparent" type="date" {...form.register('tanggalMulai')} />
+              </AdminField>
+
+              <AdminField
+                label="Tanggal Selesai"
+                required
+                error={form.formState.errors.tanggalSelesai?.message}
+              >
+                <AdminInput
+                  className="bg-transparent"
+                  type="date"
+                  {...form.register('tanggalSelesai')}
+                />
+              </AdminField>
+
+              <AdminField
+                label="Deskripsi"
+                required
+                error={form.formState.errors.description?.message}
+              >
+                <AdminTextarea
+                  placeholder="Deskripsi kegiatan..."
+                  {...form.register('description')}
+                />
+              </AdminField>
             </div>
           </div>
 
@@ -186,7 +287,7 @@ export default function DashboardPage() {
           <div className="absolute bottom-0 right-0 h-24 w-[240px] flex items-center justify-center z-20">
             <button
               type="submit"
-              disabled={createDashboard.isPending}
+              disabled={isMutating}
               className={clsx(`
                 w-[220px]
                 h-[70px]
@@ -215,11 +316,26 @@ export default function DashboardPage() {
                 borderRadius: '18px 8px 18px 8px',
               }}
             >
-              {createDashboard.isPending ? 'Menyimpan...' : 'Submit'}
+              {isMutating ? 'Menyimpan...' : editingId ? 'Update' : 'Submit'}
             </button>
           </div>
         </section>
       </form>
+
+      <AdminList
+        title={editingId ? 'Daftar Kegiatan (mode edit)' : 'Daftar Kegiatan'}
+        items={activities.map((activity) => ({
+          id: activity.id,
+          title: activity.title,
+          subtitle: `${activity.division.toUpperCase()} · ${activity.location}`,
+        }))}
+        isLoading={isLoading}
+        error={error}
+        editingId={editingId}
+        isMutating={isMutating}
+        onEdit={handleEdit}
+        onDelete={(id) => deleteActivity.mutate(id)}
+      />
     </AdminContent>
   );
 }

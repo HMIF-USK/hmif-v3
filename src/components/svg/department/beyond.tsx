@@ -30,9 +30,9 @@ const BeyondLogoGray: React.FC<BeyondLogoGrayProps> = ({ size }) => {
           width="467.038"
           height="534.625"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feGaussianBlur stdDeviation="3" result="effect1_foregroundBlur_156_45" />
         </filter>

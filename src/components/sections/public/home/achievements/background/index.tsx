@@ -1,12 +1,25 @@
 'use client';
 import EllipsAchievement from '@/components/svg/achievements/ellips-achievement';
 import ElementAchievement from '@/components/svg/achievements/element';
-import { useState, useEffect } from 'react';
-import { achievements } from '@/data/achievement-list';
+import { useState, useEffect, useMemo } from 'react';
+import { IArticle } from '@/types/article.types';
+import { useLatestAchievements } from '@/services/hmif/hmif.query';
+import { achievementToArticle, emptyArticle } from '@/services/hmif/hmif.mapper';
 import Image from 'next/image';
 import Link from 'next/link';
 
+const SLOT_COUNT = 7;
+
 const BackgroundAchievement: React.FC = () => {
+  const { data } = useLatestAchievements(SLOT_COUNT);
+
+  // Komponen ini mengindeks slot tetap (0..6), jadi selalu dipadatkan
+  // supaya tidak meledak saat API mengembalikan lebih sedikit data.
+  const achievements: IArticle[] = useMemo(() => {
+    const list = (data ?? []).map(achievementToArticle);
+    return Array.from({ length: SLOT_COUNT }, (_, i) => list[i] ?? emptyArticle());
+  }, [data]);
+
   const [isHover, setIsHover] = useState<boolean>(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false);
 
@@ -109,6 +122,7 @@ const BackgroundAchievement: React.FC = () => {
               src={achievements[0].imgUrl}
               alt={achievements[0].title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
               className="object-cover w-full h-full"
             />
           </div>
@@ -140,6 +154,7 @@ const BackgroundAchievement: React.FC = () => {
               src={achievements[1].imgUrl}
               alt={achievements[1].title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
               className="object-cover w-full h-full"
             />
           </div>
@@ -171,6 +186,7 @@ const BackgroundAchievement: React.FC = () => {
               src={achievements[2].imgUrl}
               alt={achievements[2].title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
               className="object-cover w-full h-full"
             />
           </div>
@@ -202,6 +218,7 @@ const BackgroundAchievement: React.FC = () => {
               src={achievements[3].imgUrl}
               alt={achievements[3].title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
               className="object-cover w-full h-full"
             />
           </div>
@@ -233,6 +250,7 @@ const BackgroundAchievement: React.FC = () => {
               src={achievements[4].imgUrl}
               alt={achievements[4].title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
               className="object-cover w-full h-full"
             />
           </div>
@@ -264,6 +282,7 @@ const BackgroundAchievement: React.FC = () => {
               src={achievements[6].imgUrl}
               alt={achievements[6].title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
               className="object-cover w-full h-full"
             />
           </div>

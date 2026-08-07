@@ -13,8 +13,8 @@ const RowComponent: React.FC = () => {
         x2="2.63037"
         y2="2331"
         stroke="white"
-        stroke-width="4"
-        stroke-dasharray="15 15"
+        strokeWidth="4"
+        strokeDasharray="15 15"
       />
       <line
         x1="2.63037"
@@ -22,8 +22,8 @@ const RowComponent: React.FC = () => {
         x2="2.63037"
         y2="2331"
         stroke="url(#paint0_linear_231_402)"
-        stroke-width="4"
-        stroke-dasharray="15 15"
+        strokeWidth="4"
+        strokeDasharray="15 15"
       />
       <defs>
         <linearGradient
@@ -34,8 +34,8 @@ const RowComponent: React.FC = () => {
           y2="3608.56"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#0020FD" />
-          <stop offset="0.886266" stop-color="#873AE3" />
+          <stop stopColor="#0020FD" />
+          <stop offset="0.886266" stopColor="#873AE3" />
         </linearGradient>
       </defs>
     </svg>

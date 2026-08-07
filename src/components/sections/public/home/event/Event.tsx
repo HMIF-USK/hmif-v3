@@ -1,6 +1,6 @@
 'use client';
 import Star from '@/components/svg/events/start';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -9,10 +9,15 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { ArrowRight } from 'lucide-react';
 import GridEvents from '@/components/svg/events/grid-event';
 import { IArticle } from '@/types/article.types';
-import { events } from '@/data/event-list';
+import { useProkers } from '@/services/hmif/hmif.query';
+import { prokerToArticle } from '@/services/hmif/hmif.mapper';
+import DataState from '@/core/components/data-state';
 import Link from 'next/link';
 import Image from 'next/image';
 const Events: React.FC = () => {
+  const { data, isLoading, error } = useProkers();
+  const events: IArticle[] = useMemo(() => (data ?? []).map(prokerToArticle), [data]);
+
   const isMobile = useIsMobile();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -68,6 +73,13 @@ const Events: React.FC = () => {
           </h1>
         </div>
 
+        <DataState
+          isLoading={isLoading}
+          error={error}
+          isEmpty={events.length === 0}
+          emptyText="Belum ada event yang dipublikasikan."
+        />
+
         <div className="w-full flex justify-center">
           <div className=" w-[90%] md:w-[130%] xl:w-[90%]">
             <Swiper
@@ -76,13 +88,11 @@ const Events: React.FC = () => {
               className="w-full flex justify-center"
               spaceBetween={0}
               slidesPerView={slidePerView}
-              loop={true}
+              loop={events.length > slidePerView}
               pagination={{ clickable: true }}
-              onSlideChange={(swiper) => (
-                setCurrentIndex(swiper.realIndex === events.length - 1 ? -1 : swiper.realIndex),
-                console.log(swiper.realIndex)
-              )}
-              onSwiper={(swiper) => console.log(swiper)}
+              onSlideChange={(swiper) =>
+                setCurrentIndex(swiper.realIndex === events.length - 1 ? -1 : swiper.realIndex)
+              }
               modules={[Navigation, Pagination]}
               slidesPerGroup={1}
             >
@@ -103,6 +113,7 @@ const Events: React.FC = () => {
                           src={event.imgUrl}
                           alt={event.title}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                           className="w-full h-full object-cover group-hover:scale-[1.1] duration-300"
                         />
                       </div>

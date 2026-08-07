@@ -11,13 +11,14 @@ const ACCEPTED_IMAGE_TYPES = [
 export const eventSchema = z.object({
   image: z
     .any()
-    .refine((file) => file instanceof File, "Gambar wajib diunggah")
+    .optional()
+    .refine((file) => !file || file instanceof File, "Berkas gambar tidak valid")
     .refine(
-      (file) => file?.size <= MAX_FILE_SIZE,
+      (file) => !file || file.size <= MAX_FILE_SIZE,
       "Ukuran maksimal gambar adalah 5MB"
     )
     .refine(
-      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      (file) => !file || ACCEPTED_IMAGE_TYPES.includes(file.type),
       "Hanya format .jpg, .jpeg, .png, dan .webp yang didukung"
     ),
 

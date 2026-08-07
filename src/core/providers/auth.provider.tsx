@@ -6,7 +6,7 @@ export default async function Authproviders({ children }: { children: React.Reac
   const isAuth = await authValidator();
 
   if (isAuth) {
-    redirect('/home');
+    redirect('/admin/dashboard');
   }
 
   return <>{children}</>;

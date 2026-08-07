@@ -15,7 +15,6 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('dark');
-  const [mounted, setMounted] = useState(false);
 
   const applyTheme = (nextTheme: Theme) => {
     document.documentElement.classList.toggle('dark', nextTheme === 'dark');
@@ -33,7 +32,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    setMounted(true);
     const storedTheme = localStorage.getItem('theme') as Theme | null;
     const initialTheme: Theme = storedTheme || 'dark';
 
@@ -48,11 +46,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     applyTheme(newTheme);
     localStorage.setItem('theme', newTheme);
   };
-
-  // Prevent hydration mismatch
-  if (!mounted) {
-    return null;
-  }
 
   return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
 }

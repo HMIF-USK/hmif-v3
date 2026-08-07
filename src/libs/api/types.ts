@@ -1,23 +1,7 @@
-// ============ SHARED API TYPES ============
-// File ini tidak menggunakan "use server" atau "use client"
-// sehingga bisa diimport dari mana saja.
-
-export interface ApiResponse<T> {
-  data: T;
-  message?: string;
-  success?: boolean;
-}
-
 export interface ApiError {
   message: string;
   statusCode?: number;
   errors?: Record<string, string[]>;
-}
-
-export interface FetchRequestConfig {
-  method?: string;
-  body?: unknown;
-  headers?: Record<string, string>;
 }
 
 export interface ServerFetchConfig {
@@ -33,13 +17,9 @@ export class ApiRequestError extends Error {
   errors?: Record<string, string[]>;
   isAuthError: boolean;
 
-  constructor(
-    message: string,
-    statusCode?: number,
-    errors?: Record<string, string[]>,
-  ) {
+  constructor(message: string, statusCode?: number, errors?: Record<string, string[]>) {
     super(message);
-    this.name = "ApiRequestError";
+    this.name = 'ApiRequestError';
     this.statusCode = statusCode;
     this.errors = errors;
     this.isAuthError = statusCode === 401;

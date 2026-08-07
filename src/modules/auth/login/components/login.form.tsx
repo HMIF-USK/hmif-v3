@@ -1,11 +1,9 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import TextField from '@/core/components/text-field';
 import { cn } from '@/utils/classname';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import Link from 'next/link';
-import { useState } from 'react';
 import { toast } from 'sonner';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,8 +12,7 @@ import { schemaLogin, TLogin } from '@/services/auth/auth.type';
 
 export default function LoginForm() {
   const loginMutation = useLogin();
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const isLoading = loginMutation.isPending;
 
   const {
     control,
@@ -29,24 +26,17 @@ export default function LoginForm() {
     },
   });
 
-  const handleLogin = async (data: TLogin) => {
-    setIsLoading(true);
-    loginMutation.mutateAsync(data, {
-      onSuccess: () => {
-        setIsLoading(false);
-        toast.success('Login successful');
-      },
-      onError: (error) => {
-        setIsLoading(false);
-        toast.error(error?.message || 'Invalid username or password');
-      },
+  const handleLogin = (data: TLogin) => {
+    loginMutation.mutate(data, {
+      onSuccess: () => toast.success('Login berhasil'),
+      onError: (error) => toast.error(error?.message || 'Username atau password salah'),
     });
   };
 
   return (
     <Card className={cn('w-full min-w-[320px] max-w-lg mx-auto')}>
       <CardHeader className={cn('flex items-center justify-center flex-col gap-2')}>
-        <CardTitle className="lg:text-4xl">Login to Labskill</CardTitle>
+        <CardTitle className="lg:text-4xl">Login Admin HMIF</CardTitle>
       </CardHeader>
 
       <CardContent>
@@ -94,32 +84,9 @@ export default function LoginForm() {
             {isLoading ? <Icon icon="eos-icons:three-dots-loading" className="size-5" /> : 'Log in'}
           </Button>
 
-          <div className="grid grid-cols-7 items-center mb-4">
-            <hr className="col-span-3 border-t border-border" />
-            <p className="col-span-1 text-center text-white">Or</p>
-            <hr className="col-span-3 border-t border-border" />
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            className={cn(
-              'text-sm font-light flex flex-row gap-2 bg-inherit text-white w-full h-10'
-            )}
-            disabled={isLoading}
-          >
-            <Icon icon="flat-color-icons:google" />
-            <span>Log in with google</span>
-          </Button>
         </form>
       </CardContent>
 
-      <CardFooter className={cn('flex items-center justify-center text-xs')}>
-        <p className="text-muted-foreground">Don&apos;t have an account?</p>
-        <Link href="/auth/register" className="text-primary font-normal pl-1">
-          Sign up
-        </Link>
-      </CardFooter>
     </Card>
   );
 }

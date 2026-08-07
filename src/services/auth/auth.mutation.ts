@@ -1,15 +1,18 @@
+'use client';
+
 import { useMutation } from '@tanstack/react-query';
-import { TLogin } from './auth.type';
-import { objectToFormData } from '@/utils/form-data.util';
-import { validateSchemaLogin } from './auth.store';
+import { useRouter } from 'next/navigation';
+import { login } from './auth.store';
+import type { TLogin } from './auth.type';
 
 export const useLogin = () => {
-  return useMutation({
-    mutationFn: async ({ username, password }: TLogin) => {
-      const formData = objectToFormData({ username, password });
-      const res = await validateSchemaLogin(undefined, formData);
+  const router = useRouter();
 
-      return res;
+  return useMutation({
+    mutationFn: (payload: TLogin) => login(payload),
+    onSuccess: () => {
+      router.replace('/admin/dashboard');
+      router.refresh();
     },
   });
 };

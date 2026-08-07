@@ -88,11 +88,9 @@ const Merch: React.FC = () => {
             slidesPerView={slidePerView}
             loop={true}
             pagination={{ clickable: true }}
-            onSlideChange={(swiper) => (
-              setCurrentIndex(swiper.realIndex === 5 ? -1 : swiper.realIndex),
-              console.log(swiper.realIndex)
-            )}
-            onSwiper={(swiper) => console.log(swiper)}
+            onSlideChange={(swiper) =>
+              setCurrentIndex(swiper.realIndex === 5 ? -1 : swiper.realIndex)
+            }
             modules={[Navigation, Pagination]}
             slidesPerGroup={1}
           >

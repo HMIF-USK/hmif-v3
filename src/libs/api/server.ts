@@ -1,36 +1,18 @@
-"use server";
+'use server';
 
-import { cookies } from "next/headers";
-import type { ApiResponse, ApiError, ServerFetchConfig } from "./types";
+import { cookies } from 'next/headers';
+import { env } from '@/configs/env.config';
+import { ACCESS_TOKEN_COOKIE_KEY } from '@/configs/cookies.config';
+import { ApiRequestError, type ApiError, type ServerFetchConfig } from './types';
 
-// ============ CONFIGURATION ============
-const API_BASE_URL =
-  process.env.API_URL ||
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000/api";
+const API_BASE_URL = `${env.NEXT_PUBLIC_BACKEND_URL.replace(/\/$/, '')}/api`;
 
-const ACCESS_TOKEN_KEY = "access_token";
-
-// ============ INTERNAL HELPERS ============
-async function buildServerHeaders(
-  withAuth: boolean,
-): Promise<Record<string, string>> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-
-  // API Key — preferably server-only env var (not exposed to browser)
-  const apiKey = process.env.API_KEY || process.env.NEXT_PUBLIC_API_KEY;
-  if (apiKey) {
-    headers["x-api-key"] = apiKey;
-  }
+async function buildHeaders(withAuth: boolean): Promise<Record<string, string>> {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
 
   if (withAuth) {
-    const cookieStore = await cookies();
-    const token = cookieStore.get(ACCESS_TOKEN_KEY)?.value;
-    if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
-    }
+    const token = (await cookies()).get(ACCESS_TOKEN_COOKIE_KEY)?.value;
+    if (token) headers['Authorization'] = `Bearer ${token}`;
   }
 
   return headers;
@@ -39,90 +21,59 @@ async function buildServerHeaders(
 async function serverFetch<T>(
   url: string,
   config: ServerFetchConfig,
-  withAuth: boolean,
+  withAuth: boolean
 ): Promise<T> {
-  const {
-    method = "GET",
-    body,
-    headers: extraHeaders = {},
-    cache,
-    next,
-  } = config;
+  const { method = 'GET', body, headers: extraHeaders = {}, cache, next } = config;
 
   const res = await fetch(`${API_BASE_URL}${url}`, {
     method,
-    headers: {
-      ...(await buildServerHeaders(withAuth)),
-      ...extraHeaders,
-    },
+    headers: { ...(await buildHeaders(withAuth)), ...extraHeaders },
     body: body !== undefined ? JSON.stringify(body) : undefined,
     cache,
     next,
   });
 
+  const json = await res.json().catch(() => undefined);
+
   if (!res.ok) {
-    let errorData: ApiError | undefined;
-    try {
-      errorData = await res.json();
-    } catch {
-      // ignore parse error
-    }
-    const { ApiRequestError } = await import("./types");
+    const error = json as ApiError | undefined;
     throw new ApiRequestError(
-      errorData?.message || `Request failed with status ${res.status}`,
+      error?.message || `Request failed with status ${res.status}`,
       res.status,
-      errorData?.errors,
+      error?.errors
     );
   }
 
-  const json: ApiResponse<T> = await res.json();
-  return json.data;
+  // Backend ini tidak konsisten: sebagian membungkus `{ message, data }`
+  // (prokers/events/achievements/departments), sebagian mengembalikan
+  // payload mentah (activities) atau menaruh field di root (auth/login).
+  return (json && typeof json === 'object' && 'data' in json ? json.data : json) as T;
 }
 
-// ============ PUBLIC (no auth) ============
-export async function serverPublicRequest<T>(
-  url: string,
-  config: ServerFetchConfig = {},
-): Promise<T> {
+export async function serverPublicRequest<T>(url: string, config: ServerFetchConfig = {}) {
   return serverFetch<T>(url, config, false);
 }
 
-// ============ PROTECTED (with auth) ============
-export async function serverRequest<T>(
-  url: string,
-  config: ServerFetchConfig = {},
-): Promise<T> {
+export async function serverRequest<T>(url: string, config: ServerFetchConfig = {}) {
   return serverFetch<T>(url, config, true);
 }
 
-// ============ CONVENIENCE METHODS ============
-export async function serverGet<T>(url: string): Promise<T> {
-  return serverRequest<T>(url, { method: "GET" });
+export async function serverGet<T>(url: string, config: ServerFetchConfig = {}) {
+  return serverPublicRequest<T>(url, { ...config, method: 'GET' });
 }
 
-export async function serverPost<T>(url: string, data?: unknown): Promise<T> {
-  return serverRequest<T>(url, { method: "POST", body: data });
+export async function serverPost<T>(url: string, data?: unknown) {
+  return serverRequest<T>(url, { method: 'POST', body: data });
 }
 
-export async function serverPut<T>(url: string, data?: unknown): Promise<T> {
-  return serverRequest<T>(url, { method: "PUT", body: data });
+export async function serverPut<T>(url: string, data?: unknown) {
+  return serverRequest<T>(url, { method: 'PUT', body: data });
 }
 
-export async function serverPatch<T>(url: string, data?: unknown): Promise<T> {
-  return serverRequest<T>(url, { method: "PATCH", body: data });
+export async function serverDel<T>(url: string) {
+  return serverRequest<T>(url, { method: 'DELETE' });
 }
 
-export async function serverDel<T>(url: string): Promise<T> {
-  return serverRequest<T>(url, { method: "DELETE" });
-}
-
-export async function serverPublicGet<T>(url: string): Promise<T> {
-  return serverPublicRequest<T>(url, { method: "GET" });
-}
-
-export async function serverPublicPost<T>(
-  url: string,
-  data?: unknown,
-): Promise<T> {
-  return serverPublicRequest<T>(url, { method: "POST", body: data });
+export async function serverPublicPost<T>(url: string, data?: unknown) {
+  return serverPublicRequest<T>(url, { method: 'POST', body: data });
 }

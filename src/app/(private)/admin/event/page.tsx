@@ -1,9 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 
 import AdminContent from "@/core/components/admin/organisms/admin-content";
 import AdminSection from "@/core/components/admin/organisms/admin-section";
@@ -16,6 +15,18 @@ import AdminFieldRow from "@/core/components/admin/molecules/admin-field-row";
 import AdminInput from "@/core/components/admin/atoms/admin-input";
 import AdminSelect from "@/core/components/admin/atoms/admin-select";
 import AdminDatePicker from "@/core/components/admin/atoms/admin-date-picker";
+
+import AdminList from "@/core/components/admin/organisms/admin-list";
+
+import {
+  useCreateProker,
+  useDeleteProker,
+  useDepartments,
+  useProkers,
+  useUpdateProker,
+} from "@/services/hmif/hmif.query";
+import { toIsoDate, uploadImage } from "@/utils/cloudinary.util";
+import { prokerStatusFromRange } from "@/services/hmif/hmif.mapper";
 
 import { eventSchema, EventFormValues } from "./schema";
 
@@ -41,24 +52,73 @@ export default function EventPage() {
     return URL.createObjectURL(imageFile);
   }, [imageFile]);
 
-  const createEvent = useMutation({
-    mutationFn: async (data: EventFormValues) => {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      return data;
-    },
-    onSuccess: (data) => {
-      console.log("Successfully submitted!", data);
-      alert("Berhasil menyimpan data event!");
-      form.reset();
-    },
-    onError: (error) => {
-      console.error("Failed to submit", error);
-      alert("Terjadi kesalahan saat menyimpan data.");
-    },
-  });
+  const [editingId, setEditingId] = useState<string | null>(null);
 
-  const onSubmit = (data: EventFormValues) => {
-    createEvent.mutate(data);
+  const { data: departments = [] } = useDepartments();
+  const { data: prokers = [], isLoading, error } = useProkers();
+
+  const departmentOptions = useMemo(
+    () => departments.map((d) => ({ label: d.name, value: d.id })),
+    [departments]
+  );
+
+  const createProker = useCreateProker();
+  const updateProker = useUpdateProker();
+  const deleteProker = useDeleteProker();
+
+  const isMutating =
+    createProker.isPending || updateProker.isPending || deleteProker.isPending;
+
+  const buildPayload = async (data: EventFormValues) => {
+    const event_start = toIsoDate(data.tanggalMulai, data.waktuMulai);
+    const event_end = toIsoDate(data.tanggalSelesai, data.waktuSelesai);
+
+    return {
+      name: data.namaKegiatan,
+      departement_id: data.penyelenggara,
+      description: data.description,
+      location: data.lokasiEvent,
+      event_start,
+      event_end,
+      status: prokerStatusFromRange(event_start, event_end),
+      photos: data.image instanceof File ? [await uploadImage(data.image)] : [],
+    };
+  };
+
+  const onSubmit = async (data: EventFormValues) => {
+    try {
+      const payload = await buildPayload(data);
+
+      if (editingId) {
+        await updateProker.mutateAsync({ id: editingId, payload });
+        setEditingId(null);
+      } else {
+        await createProker.mutateAsync(payload);
+      }
+
+      form.reset();
+      alert("Berhasil menyimpan data event!");
+    } catch (err) {
+      alert((err as Error).message || "Terjadi kesalahan saat menyimpan data.");
+    }
+  };
+
+  const handleEdit = (id: string) => {
+    const proker = prokers.find((item) => item.id === id);
+    if (!proker) return;
+
+    setEditingId(id);
+    form.reset({
+      namaKegiatan: proker.name,
+      penyelenggara: proker.departement_id,
+      lokasiEvent: proker.location,
+      tanggalMulai: proker.event_start.slice(0, 10),
+      tanggalSelesai: proker.event_end.slice(0, 10),
+      waktuMulai: proker.event_start.slice(11, 16),
+      waktuSelesai: proker.event_end.slice(11, 16),
+      description: proker.description,
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -111,36 +171,7 @@ export default function EventPage() {
                       value={field.value}
                       onValueChange={field.onChange}
                       placeholder="Departement"
-                      options={[
-                        {
-                          label: "HUAL",
-                          value: "hual",
-                        },
-                        {
-                          label: "KEAGAMAAN",
-                          value: "KEAGAMAAN",
-                        },
-                        {
-                          label: "KOMINKRAF",
-                          value: "KOMINKRAF",
-                        },
-                        {
-                          label: "MBA",
-                          value: "MBA",
-                        },
-                        {
-                          label: "PKM",
-                          value: "PKM",
-                        },
-                        {
-                          label: "PPM",
-                          value: "PPM",
-                        },
-                        {
-                          label: "SOSMAS",
-                          value: "SOSMAS",
-                        },
-                      ]}
+                      options={departmentOptions}
                     />
                   )}
                 />
@@ -231,7 +262,7 @@ export default function EventPage() {
                 value={field.value}
                 placeholder="Masukkan deskripsi event..."
                 onChange={field.onChange}
-                isSubmitting={createEvent.isPending}
+                isSubmitting={isMutating}
               />
 
               {fieldState.error && (
@@ -243,6 +274,21 @@ export default function EventPage() {
           )}
         />
       </form>
+
+      <AdminList
+        title={editingId ? "Daftar Event (mode edit)" : "Daftar Event"}
+        items={prokers.map((proker) => ({
+          id: proker.id,
+          title: proker.name,
+          subtitle: `${proker.departement?.name ?? "-"} · ${proker.location}`,
+        }))}
+        isLoading={isLoading}
+        error={error}
+        editingId={editingId}
+        isMutating={isMutating}
+        onEdit={handleEdit}
+        onDelete={(id) => deleteProker.mutate(id)}
+      />
     </AdminContent>
   );
 }

@@ -1,2 +1,5 @@
-export const APP_SESSION_COOKIE_KEY = "app_session";
-export const APP_REFRESH_TOKEN_COOKIE_EXPIRES_IN = 24 * 60 * 60 * 1000;
+/** Cookie httpOnly berisi JWT mentah dari backend (POST /api/auth/login). */
+export const ACCESS_TOKEN_COOKIE_KEY = 'access_token';
+
+/** Backend menandatangani token dengan expiresIn 1d. */
+export const ACCESS_TOKEN_MAX_AGE = 24 * 60 * 60;

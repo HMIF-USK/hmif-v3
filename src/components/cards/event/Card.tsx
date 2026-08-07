@@ -29,6 +29,7 @@ const CardEvent: React.FC<ICardEvent> = ({ data, isLastItem }) => {
               src={data.imgUrl}
               alt={data.title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
               className=" w-full h-full object-cover group-hover:scale-[1.1] duration-300"
             />
             <div className="absolute z-[3] w-full h-full bg-gradient-to-t from-brand-deep via-brand-deep/20 p-5 lg:p-10 to-transparent flex items-end justify-center lg:group-hover:opacity-[1] opacity-[1] lg:opacity-0 duration-300">
@@ -66,7 +67,7 @@ const CardEvent: React.FC<ICardEvent> = ({ data, isLastItem }) => {
                   <path
                     d="M451.564 6.47422C449.003 4.50125 446.343 2.62193 443.463 0.96093L380.977 -35.0767C294.427 34.8252 101.495 96.2818 58.5239 109.378C58.6381 109.132 51.6323 139.052 51.6434 138.547C107.356 126.494 378.653 65.1471 451.564 6.47422ZM87.4913 60.1952C139.435 44.5345 253.852 3.67604 325.356 -69.3919L265.2 -103.022C229.61 -124.334 184.012 -110.101 163.881 -73.8287L87.4913 60.1952ZM265.691 305.51C300.634 325.662 346.865 317.353 369.652 278.365L405.67 215.912C310.72 189.841 191.249 216.337 137.734 231.695L265.691 305.51ZM56.4732 172.928L84.1655 203.177C139.491 190.255 309.282 153.651 436.102 159.926L470.245 100.723C472.878 96.1327 475.006 91.2708 476.594 86.2224C386.949 68.8208 113.788 154.733 62.0905 171.419"
                     fill="#A9A3B1"
-                    fill-opacity="0.15"
+                    fillOpacity="0.15"
                   />
                 </g>
               </svg>

@@ -1,15 +1,12 @@
-import SharingKnowledge from "./_containers/SharingKnowledge";
+import NavLayout from '@/core/layouts/nav.layout';
+import InformaticsClubContainer from './_containers/informatic-club';
+import SharingKnowledge from './_containers/SharingKnowledge';
 
-<<<<<<< HEAD
-export default function DevisionSection() {
-  return <DivisionSection />;
-}
-=======
 export default function InformaticClubPage() {
   return (
-    <>
+    <NavLayout>
+      <InformaticsClubContainer />
       <SharingKnowledge />
-    </>
+    </NavLayout>
   );
 }
->>>>>>> 41400e0fdfeda016f1228fd5b069ef23fbae2009

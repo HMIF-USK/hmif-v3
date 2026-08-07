@@ -20,9 +20,9 @@ const backdropEvents: React.FC = () => {
           width="2605"
           height="2316"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feGaussianBlur stdDeviation="218" result="effect1_foregroundBlur_0_1" />
         </filter>
@@ -33,9 +33,9 @@ const backdropEvents: React.FC = () => {
           width="2692"
           height="2247"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feGaussianBlur stdDeviation="142" result="effect1_foregroundBlur_0_1" />
         </filter>
@@ -47,8 +47,8 @@ const backdropEvents: React.FC = () => {
           y2="1643"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.72" stop-color="#7300FF" />
-          <stop offset="1" stop-color="#B76BC6" />
+          <stop offset="0.72" stopColor="#7300FF" />
+          <stop offset="1" stopColor="#B76BC6" />
         </linearGradient>
       </defs>
     </svg>

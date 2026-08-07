@@ -41,7 +41,7 @@ const CapsEvent: React.FC = () => {
           width="334"
           height="281"
           fill="url(#pattern4_0_1)"
-          shape-rendering="crispEdges"
+          shapeRendering="crispEdges"
         />
       </g>
       <defs>
@@ -52,9 +52,9 @@ const CapsEvent: React.FC = () => {
           width="484.457"
           height="498.912"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feColorMatrix
             in="SourceAlpha"
@@ -78,9 +78,9 @@ const CapsEvent: React.FC = () => {
           width="402.04"
           height="427.703"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feColorMatrix
             in="SourceAlpha"
@@ -104,9 +104,9 @@ const CapsEvent: React.FC = () => {
           width="397.708"
           height="312.4"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feColorMatrix
             in="SourceAlpha"
@@ -130,9 +130,9 @@ const CapsEvent: React.FC = () => {
           width="373.367"
           height="313"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feColorMatrix
             in="SourceAlpha"
@@ -156,9 +156,9 @@ const CapsEvent: React.FC = () => {
           width="354.2"
           height="325.1"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"

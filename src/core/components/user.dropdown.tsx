@@ -53,19 +53,18 @@ export default function UserDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger className="cursor-pointer">
         <Avatar>
-          <AvatarImage src={user?.photoUrl ?? '/avatars/1.png'} />
+          <AvatarImage src="/avatars/1.png" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="p-4">
         <div className="flex gap-2 items-center">
           <Avatar>
-            <AvatarImage src={user?.photoUrl} />
+            <AvatarImage src="/avatars/1.png" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <DropdownMenuLabel className="flex flex-col gap-2">
-            <span className="text-xs text-muted-foreground">{user?.username}</span>
-            <span className="text-sm font-semibold">{user?.name}</span>
+            <span className="text-sm font-semibold">{user?.username}</span>
           </DropdownMenuLabel>
         </div>
         <DropdownMenuSeparator />

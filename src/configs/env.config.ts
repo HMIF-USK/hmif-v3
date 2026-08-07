@@ -14,6 +14,8 @@ export const env = createEnv({
     NEXT_PUBLIC_APP_URL: requiredString.url(),
     NEXT_PUBLIC_BACKEND_URL: requiredString.url(),
     NEXT_PUBLIC_BASEPATH: requiredString,
+    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: requiredString,
+    NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET: requiredString,
   },
   // Runtime Environment Variables Configuration
   runtimeEnv: {
@@ -22,6 +24,8 @@ export const env = createEnv({
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
     NEXT_PUBLIC_BASEPATH: process.env.NEXT_PUBLIC_BASEPATH,
+    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+    NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,
   },
   // Skip Validation for the following Environment Variables
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

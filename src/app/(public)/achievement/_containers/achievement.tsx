@@ -8,10 +8,19 @@ import NavLayout from '@/core/layouts/nav.layout';
 import SpringElementOne from '@/components/svg/achievements/spring-element-one';
 import SpringElementTwo from '@/components/svg/achievements/spring-element-two';
 import WaterElement from '@/components/svg/achievements/water-element';
-import { achievements } from '@/data/achievement-list';
+import { useAchievements } from '@/services/hmif/hmif.query';
+import { achievementToArticle } from '@/services/hmif/hmif.mapper';
+import DataState from '@/core/components/data-state';
+import { useMemo } from 'react';
 import { IArticle } from '@/types/article.types';
 import Image from 'next/image';
 const ContainerAchievement: React.FC = () => {
+  const { data, isLoading, error } = useAchievements();
+  const achievements: IArticle[] = useMemo(
+    () => (data ?? []).map(achievementToArticle),
+    [data]
+  );
+
   const swiperAchievementStyle: CustomCSSProperties = {
     '--swiper-pagination-color': '#393054',
     '--swiper-pagination-bullet-inactive-color': '#fff',
@@ -37,28 +46,28 @@ const ContainerAchievement: React.FC = () => {
                 <path
                   d="M-46.0004 219.53C-43.9331 131.828 272.806 198.074 697.379 204.742C1121.95 211.409 1473.07 152.328 1471 240.03C1468.93 327.732 1140.57 471.698 715.999 465.03C291.426 458.362 -48.0677 307.232 -46.0004 219.53Z"
                   fill="url(#paint0_linear_0_57)"
-                  fill-opacity="0.8"
+                  fillOpacity="0.8"
                 />
               </g>
               <g style={{ mixBlendMode: 'plus-lighter' }} filter="url(#filter1_f_0_57)">
                 <path
                   d="M9.49982 235.262C10.3258 200.221 292.906 296.013 676 302.03C1059.09 308.046 1389.83 220.989 1389 256.03C1388.17 291.07 1070.09 426.546 687 420.53C303.906 414.513 8.67386 270.302 9.49982 235.262Z"
                   fill="white"
-                  fill-opacity="0.8"
+                  fillOpacity="0.8"
                 />
               </g>
               <g style={{ mixBlendMode: 'overlay' }} filter="url(#filter2_f_0_57)">
                 <path
                   d="M9.49982 276.262C10.3258 241.221 292.906 337.013 676 343.03C1059.09 349.046 1389.83 261.989 1389 297.03C1388.17 332.07 1070.09 467.546 687 461.53C303.906 455.513 8.67386 311.302 9.49982 276.262Z"
                   fill="white"
-                  fill-opacity="0.8"
+                  fillOpacity="0.8"
                 />
               </g>
               <path
                 d="M1507.5 -90.5V266.818C1317.5 365.764 1048.21 427.56 749.498 427.56C451.315 427.56 182.443 365.981 -7.5 267.34V-90.5H1507.5Z"
                 fill="url(#paint1_linear_0_57)"
                 stroke="url(#paint2_linear_0_57)"
-                stroke-width="3"
+                strokeWidth="3"
               />
               <g opacity="0.87" filter="url(#filter3_f_0_57)">
                 <path
@@ -84,9 +93,9 @@ const ContainerAchievement: React.FC = () => {
                   width="1718.02"
                   height="491.755"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feBlend
                     mode="normal"
                     in="SourceGraphic"
@@ -102,9 +111,9 @@ const ContainerAchievement: React.FC = () => {
                   width="1444.7"
                   height="258.348"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feBlend
                     mode="normal"
                     in="SourceGraphic"
@@ -120,9 +129,9 @@ const ContainerAchievement: React.FC = () => {
                   width="1444.7"
                   height="258.348"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feBlend
                     mode="normal"
                     in="SourceGraphic"
@@ -138,9 +147,9 @@ const ContainerAchievement: React.FC = () => {
                   width="850.11"
                   height="306.571"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feBlend
                     mode="normal"
                     in="SourceGraphic"
@@ -156,9 +165,9 @@ const ContainerAchievement: React.FC = () => {
                   width="1389.8"
                   height="248.476"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feBlend
                     mode="normal"
                     in="SourceGraphic"
@@ -175,9 +184,9 @@ const ContainerAchievement: React.FC = () => {
                   y2="-117.572"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#AE00FF" />
-                  <stop offset="0.825" stop-color="#E19FFF" />
-                  <stop offset="1" stop-color="#5E00FF" />
+                  <stop stopColor="#AE00FF" />
+                  <stop offset="0.825" stopColor="#E19FFF" />
+                  <stop offset="1" stopColor="#5E00FF" />
                 </linearGradient>
                 <linearGradient
                   id="paint1_linear_0_57"
@@ -187,8 +196,8 @@ const ContainerAchievement: React.FC = () => {
                   y2="429.06"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#0E0A17" />
-                  <stop offset="1" stop-color="#1A0046" />
+                  <stop stopColor="#0E0A17" />
+                  <stop offset="1" stopColor="#1A0046" />
                 </linearGradient>
                 <linearGradient
                   id="paint2_linear_0_57"
@@ -198,9 +207,9 @@ const ContainerAchievement: React.FC = () => {
                   y2="144.53"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#140E24" />
-                  <stop offset="0.5" stop-color="#E19FFF" />
-                  <stop offset="1" stop-color="#140E24" />
+                  <stop stopColor="#140E24" />
+                  <stop offset="0.5" stopColor="#E19FFF" />
+                  <stop offset="1" stopColor="#140E24" />
                 </linearGradient>
                 <linearGradient
                   id="paint3_linear_0_57"
@@ -210,8 +219,8 @@ const ContainerAchievement: React.FC = () => {
                   y2="538.394"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#C60786" />
-                  <stop offset="1" stop-color="#8400FF" />
+                  <stop stopColor="#C60786" />
+                  <stop offset="1" stopColor="#8400FF" />
                 </linearGradient>
               </defs>
             </svg>
@@ -229,28 +238,28 @@ const ContainerAchievement: React.FC = () => {
                 <path
                   d="M-46.0004 219.53C-43.9331 131.828 272.806 198.074 697.379 204.742C1121.95 211.409 1473.07 152.328 1471 240.03C1468.93 327.732 1140.57 471.698 715.999 465.03C291.426 458.362 -48.0677 307.232 -46.0004 219.53Z"
                   fill="url(#paint0_linear_0_57)"
-                  fill-opacity="0.8"
+                  fillOpacity="0.8"
                 />
               </g>
               <g style={{ mixBlendMode: 'plus-lighter' }} filter="url(#filter1_f_0_57)">
                 <path
                   d="M9.49982 235.262C10.3258 200.221 292.906 296.013 676 302.03C1059.09 308.046 1389.83 220.989 1389 256.03C1388.17 291.07 1070.09 426.546 687 420.53C303.906 414.513 8.67386 270.302 9.49982 235.262Z"
                   fill="white"
-                  fill-opacity="0.8"
+                  fillOpacity="0.8"
                 />
               </g>
               <g style={{ mixBlendMode: 'overlay' }} filter="url(#filter2_f_0_57)">
                 <path
                   d="M9.49982 276.262C10.3258 241.221 292.906 337.013 676 343.03C1059.09 349.046 1389.83 261.989 1389 297.03C1388.17 332.07 1070.09 467.546 687 461.53C303.906 455.513 8.67386 311.302 9.49982 276.262Z"
                   fill="white"
-                  fill-opacity="0.8"
+                  fillOpacity="0.8"
                 />
               </g>
               <path
                 d="M1507.5 -90.5V266.818C1317.5 365.764 1048.21 427.56 749.498 427.56C451.315 427.56 182.443 365.981 -7.5 267.34V-90.5H1507.5Z"
                 fill="url(#paint1_linear_0_57)"
                 stroke="url(#paint2_linear_0_57)"
-                stroke-width="3"
+                strokeWidth="3"
               />
               <g opacity="0.87" filter="url(#filter3_f_0_57)">
                 <path
@@ -276,9 +285,9 @@ const ContainerAchievement: React.FC = () => {
                   width="1718.02"
                   height="491.755"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feBlend
                     mode="normal"
                     in="SourceGraphic"
@@ -294,9 +303,9 @@ const ContainerAchievement: React.FC = () => {
                   width="1444.7"
                   height="258.348"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feBlend
                     mode="normal"
                     in="SourceGraphic"
@@ -312,9 +321,9 @@ const ContainerAchievement: React.FC = () => {
                   width="1444.7"
                   height="258.348"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feBlend
                     mode="normal"
                     in="SourceGraphic"
@@ -330,9 +339,9 @@ const ContainerAchievement: React.FC = () => {
                   width="850.11"
                   height="306.571"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feBlend
                     mode="normal"
                     in="SourceGraphic"
@@ -348,9 +357,9 @@ const ContainerAchievement: React.FC = () => {
                   width="1389.8"
                   height="248.476"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feBlend
                     mode="normal"
                     in="SourceGraphic"
@@ -367,9 +376,9 @@ const ContainerAchievement: React.FC = () => {
                   y2="-117.572"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#AE00FF" />
-                  <stop offset="0.825" stop-color="#E19FFF" />
-                  <stop offset="1" stop-color="#5E00FF" />
+                  <stop stopColor="#AE00FF" />
+                  <stop offset="0.825" stopColor="#E19FFF" />
+                  <stop offset="1" stopColor="#5E00FF" />
                 </linearGradient>
                 <linearGradient
                   id="paint1_linear_0_57"
@@ -379,8 +388,8 @@ const ContainerAchievement: React.FC = () => {
                   y2="429.06"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#0E0A17" />
-                  <stop offset="1" stop-color="#1A0046" />
+                  <stop stopColor="#0E0A17" />
+                  <stop offset="1" stopColor="#1A0046" />
                 </linearGradient>
                 <linearGradient
                   id="paint2_linear_0_57"
@@ -390,9 +399,9 @@ const ContainerAchievement: React.FC = () => {
                   y2="144.53"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#140E24" />
-                  <stop offset="0.5" stop-color="#E19FFF" />
-                  <stop offset="1" stop-color="#140E24" />
+                  <stop stopColor="#140E24" />
+                  <stop offset="0.5" stopColor="#E19FFF" />
+                  <stop offset="1" stopColor="#140E24" />
                 </linearGradient>
                 <linearGradient
                   id="paint3_linear_0_57"
@@ -402,8 +411,8 @@ const ContainerAchievement: React.FC = () => {
                   y2="538.394"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#C60786" />
-                  <stop offset="1" stop-color="#8400FF" />
+                  <stop stopColor="#C60786" />
+                  <stop offset="1" stopColor="#8400FF" />
                 </linearGradient>
               </defs>
             </svg>
@@ -428,10 +437,8 @@ const ContainerAchievement: React.FC = () => {
               className="w-full h-full flex justify-center bg-transparent"
               spaceBetween={0}
               slidesPerView={1}
-              loop={true}
+              loop={achievements.length > 1}
               pagination={{ clickable: true }}
-              onSlideChange={(swiper) => console.log(swiper.realIndex)}
-              onSwiper={(swiper) => console.log(swiper)}
               modules={[Navigation, Pagination]}
               slidesPerGroup={1}
             >
@@ -443,6 +450,7 @@ const ContainerAchievement: React.FC = () => {
                         src={achievement.imgUrl}
                         alt={achievement.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                         className="object-cover h-full w-full"
                       />
                     </div>
@@ -462,8 +470,14 @@ const ContainerAchievement: React.FC = () => {
             <div className="absolute z-[-5] w-[250px] md:w-[350px] -left-[25%] md:-left-[15%] top-[2100px] animate-logo">
               <WaterElement />
             </div>
+            <DataState
+              isLoading={isLoading}
+              error={error}
+              isEmpty={achievements.length === 0}
+              emptyText="Belum ada prestasi yang dipublikasikan."
+            />
             {achievements.map((achievement: IArticle, i: number) => {
-              return <AchievementPageCard key={i} achievement={achievement} index={i} />;
+              return <AchievementPageCard key={achievement.slug} achievement={achievement} index={i} />;
             })}
           </div>
         </div>

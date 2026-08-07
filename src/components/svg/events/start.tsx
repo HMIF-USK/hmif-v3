@@ -18,9 +18,9 @@ const Star: React.FC = () => {
           y2="4.02816"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#441B91" />
-          <stop offset="0.671875" stop-color="#C490FF" />
-          <stop offset="1" stop-color="#4C0385" />
+          <stop stopColor="#441B91" />
+          <stop offset="0.671875" stopColor="#C490FF" />
+          <stop offset="1" stopColor="#4C0385" />
         </linearGradient>
       </defs>
     </svg>

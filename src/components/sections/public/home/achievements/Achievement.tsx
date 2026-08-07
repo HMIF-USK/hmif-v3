@@ -3,13 +3,22 @@ import BackgroundAchievement from './background';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { CustomCSSProperties } from '@/types/customCSSProperties';
-import { achievements } from '@/data/achievement-list';
+import { useMemo } from 'react';
+import { useLatestAchievements } from '@/services/hmif/hmif.query';
+import { achievementToArticle } from '@/services/hmif/hmif.mapper';
+import DataState from '@/core/components/data-state';
 import Star from '@/components/svg/events/start';
 import { IArticle } from '@/types/article.types';
 import Link from 'next/link';
 import Image from 'next/image';
 
 const Achievements: React.FC = () => {
+  const { data, isLoading, error } = useLatestAchievements(7);
+  const achievements: IArticle[] = useMemo(
+    () => (data ?? []).map(achievementToArticle),
+    [data]
+  );
+
   const swiperEventStyle: CustomCSSProperties = {
     '--swiper-pagination-color': '#393054',
     '--swiper-pagination-bullet-inactive-color': '#fff',
@@ -38,6 +47,12 @@ const Achievements: React.FC = () => {
             </h1>
           </div>
 
+          <DataState
+            isLoading={isLoading}
+            error={error}
+            isEmpty={achievements.length === 0}
+            emptyText="Belum ada prestasi yang dipublikasikan."
+          />
           <div className=" w-[90%] grid grid-cols-2 gap-10">
             {achievements.map((achievement: IArticle, i: number) => {
               if (i < 6) {
@@ -55,6 +70,7 @@ const Achievements: React.FC = () => {
                         src={achievement.imgUrl}
                         alt={achievement.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                         className="object-cover w-full h-full"
                       />
                     </div>
@@ -90,10 +106,8 @@ const Achievements: React.FC = () => {
                 className="w-full flex justify-center"
                 spaceBetween={0}
                 slidesPerView={1}
-                loop={true}
+                loop={achievements.length > 1}
                 pagination={{ clickable: true }}
-                onSlideChange={(swiper) => console.log(swiper.realIndex)}
-                onSwiper={(swiper) => console.log(swiper)}
                 modules={[Navigation, Pagination]}
                 slidesPerGroup={1}
               >
@@ -113,6 +127,7 @@ const Achievements: React.FC = () => {
                             src={achievement.imgUrl}
                             alt={achievement.title}
                             fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                             className="object-cover w-full h-full"
                           />
                         </div>

@@ -1,9 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 
 import AdminContent from "@/core/components/admin/organisms/admin-content";
 import AdminSection from "@/core/components/admin/organisms/admin-section";
@@ -16,6 +15,16 @@ import AdminFieldRow from "@/core/components/admin/molecules/admin-field-row";
 import AdminInput from "@/core/components/admin/atoms/admin-input";
 import AdminSelect from "@/core/components/admin/atoms/admin-select";
 import AdminDatePicker from "@/core/components/admin/atoms/admin-date-picker";
+
+import AdminList from "@/core/components/admin/organisms/admin-list";
+
+import {
+  useAchievements,
+  useCreateAchievement,
+  useDeleteAchievement,
+  useUpdateAchievement,
+} from "@/services/hmif/hmif.query";
+import { toIsoDate, uploadImage } from "@/utils/cloudinary.util";
 
 import { achievementSchema, AchievementFormValues } from "./schema";
 
@@ -41,33 +50,76 @@ export default function AchievementPage() {
     return URL.createObjectURL(imageFile);
   }, [imageFile]);
 
-  // Dummy mutation for backend integration
-  const createAchievement = useMutation({
-    mutationFn: async (data: AchievementFormValues) => {
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      
-      // We could use FormData here if required by the API
-      // const formData = new FormData();
-      // formData.append("image", data.image);
-      // formData.append("namaKegiatan", data.namaKegiatan);
-      // ...
-      
-      return data;
-    },
-    onSuccess: (data) => {
-      console.log("Successfully submitted!", data);
-      alert("Berhasil menyimpan data pencapaian!");
-      form.reset();
-    },
-    onError: (error) => {
-      console.error("Failed to submit", error);
-      alert("Terjadi kesalahan saat menyimpan data.");
-    },
-  });
+  const [editingId, setEditingId] = useState<string | null>(null);
 
-  const onSubmit = (data: AchievementFormValues) => {
-    createAchievement.mutate(data);
+  const { data: achievements = [], isLoading, error } = useAchievements();
+
+  const createAchievement = useCreateAchievement();
+  const updateAchievement = useUpdateAchievement();
+  const deleteAchievement = useDeleteAchievement();
+
+  const isMutating =
+    createAchievement.isPending ||
+    updateAchievement.isPending ||
+    deleteAchievement.isPending;
+
+  const buildPayload = async (data: AchievementFormValues) => {
+    // ponytail: tabel Achievement tidak punya kolom tingkat/detail penyelenggara
+    // dan hanya punya satu tanggal, jadi keduanya ikut sebagai baris deskripsi.
+    // Upgrade path: tambah kolom di prisma/schema.prisma kalau perlu difilter.
+    const description = [
+      data.description,
+      data.tingkat && `Tingkat: ${data.tingkat}`,
+      data.detailPenyelenggara && `Detail penyelenggara: ${data.detailPenyelenggara}`,
+      data.tanggalSelesai && `Selesai: ${data.tanggalSelesai}`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    return {
+      title: data.namaKegiatan,
+      achiever_name: data.penyelenggara,
+      location: data.lokasiEvent,
+      achievement_date: toIsoDate(data.tanggalMulai),
+      description,
+      foto_urls: data.image instanceof File ? [await uploadImage(data.image)] : [],
+    };
+  };
+
+  const onSubmit = async (data: AchievementFormValues) => {
+    try {
+      const payload = await buildPayload(data);
+
+      if (editingId) {
+        await updateAchievement.mutateAsync({ id: editingId, payload });
+        setEditingId(null);
+      } else {
+        await createAchievement.mutateAsync(payload);
+      }
+
+      form.reset();
+      alert("Berhasil menyimpan data pencapaian!");
+    } catch (err) {
+      alert((err as Error).message || "Terjadi kesalahan saat menyimpan data.");
+    }
+  };
+
+  const handleEdit = (id: string) => {
+    const achievement = achievements.find((item) => item.id === id);
+    if (!achievement) return;
+
+    setEditingId(id);
+    form.reset({
+      namaKegiatan: achievement.title,
+      penyelenggara: achievement.achiever_name,
+      detailPenyelenggara: "",
+      lokasiEvent: achievement.location,
+      tingkat: "",
+      tanggalMulai: achievement.achievement_date.slice(0, 10),
+      tanggalSelesai: achievement.achievement_date.slice(0, 10),
+      description: achievement.description,
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -214,7 +266,7 @@ export default function AchievementPage() {
                   value={field.value}
                   placeholder="Masukkan deskripsi kegiatan..."
                   onChange={field.onChange}
-                  isSubmitting={createAchievement.isPending}
+                  isSubmitting={isMutating}
                 />
                 {fieldState.error && (
                   <span className="text-sm font-medium text-red-400 px-4">
@@ -225,6 +277,21 @@ export default function AchievementPage() {
             )}
           />
         </form>
+
+        <AdminList
+          title={editingId ? "Daftar Prestasi (mode edit)" : "Daftar Prestasi"}
+          items={achievements.map((achievement) => ({
+            id: achievement.id,
+            title: achievement.title,
+            subtitle: `${achievement.achiever_name} · ${achievement.location}`,
+          }))}
+          isLoading={isLoading}
+          error={error}
+          editingId={editingId}
+          isMutating={isMutating}
+          onEdit={handleEdit}
+          onDelete={(id) => deleteAchievement.mutate(id)}
+        />
       </AdminContent>
     </>
   );
