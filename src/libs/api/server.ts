@@ -1,14 +1,18 @@
 "use server";
 
 import { cookies } from "next/headers";
-import type { ApiResponse, ApiError, ServerFetchConfig } from "./types";
+import type { ApiError, ServerFetchConfig } from "./types";
 
 // ============ CONFIGURATION ============
-const API_BASE_URL =
+// Base API = <root backend>/api (lihat .env: NEXT_PUBLIC_BACKEND_URL tanpa /api)
+const API_BASE_URL = `${
   process.env.API_URL ||
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000/api";
+  process.env.NEXT_PUBLIC_BACKEND_URL ||
+  "http://localhost:5000"
+}/api`;
 
+// ponytail: belum ada endpoint protected yang dipanggil dari server.
+// Kalau nanti ada, ambil token dari sesi (auth.store getSession), bukan cookie ini.
 const ACCESS_TOKEN_KEY = "access_token";
 
 // ============ INTERNAL HELPERS ============
@@ -75,8 +79,9 @@ async function serverFetch<T>(
     );
   }
 
-  const json: ApiResponse<T> = await res.json();
-  return json.data;
+  // Backend tidak konsisten membungkus payload dalam `data`, jadi kembalikan body apa adanya
+  // dan biarkan pemanggil yang mendeskripsikan bentuknya lewat generic T.
+  return (await res.json()) as T;
 }
 
 // ============ PUBLIC (no auth) ============

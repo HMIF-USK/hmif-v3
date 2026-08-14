@@ -1,8 +1,10 @@
 import Cookies from "js-cookie";
 
 // ============ CONFIGURATION ============
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+// Base API = <root backend>/api (lihat .env: NEXT_PUBLIC_BACKEND_URL tanpa /api)
+export const API_BASE_URL = `${
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000"
+}/api`;
 
 const ACCESS_TOKEN_KEY = "access_token";
 

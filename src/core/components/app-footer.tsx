@@ -211,7 +211,7 @@ export default function AppFooter() {
       </div>
 
       <h1 className=" pt-8 border-t-[1px] border-white/25 w-screen text-center">
-        ©2025 HMIF FMIPA USK X Gutech Developer X Budak Korporat. All rights reserved
+        ©2026 HMIF FMIPA USK X Gutech Developer X Budak Korporat. All rights reserved
       </h1>
     </footer>
   );

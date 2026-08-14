@@ -1,6 +1,10 @@
 'use client';
+import { useMemo, useState } from 'react';
 import AchievementPageCard from '@/components/cards/achievements/achievements-page-card';
-import Star from '@/components/svg/events/start';
+import CabinetTimeline from '@/core/components/cabinet-timeline';
+import { cabinets, filterByCabinet, getCabinet, DEFAULT_CABINET_ID } from '@/data/cabinet-list';
+import { useAchievements } from '@/services/achievement/achievement.query';
+import { cn } from '@/utils/classname';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { CustomCSSProperties } from '@/types/customCSSProperties';
@@ -12,6 +16,20 @@ import { achievements } from '@/data/achievement-list';
 import { IArticle } from '@/types/article.types';
 import Image from 'next/image';
 const ContainerAchievement: React.FC = () => {
+  const [activeCabinetId, setActiveCabinetId] = useState(DEFAULT_CABINET_ID);
+
+  const isDynamic = getCabinet(activeCabinetId)?.source === 'api';
+
+  // Kabinet dinamis mengambil data dari backend, kabinet lama tetap dari daftar statis.
+  const { data: apiAchievements, isPending, isError, error } = useAchievements(isDynamic);
+
+  const filteredAchievements = useMemo(
+    () => (isDynamic ? (apiAchievements ?? []) : filterByCabinet(achievements, activeCabinetId)),
+    [isDynamic, apiAchievements, activeCabinetId]
+  );
+
+  const isLoading = isDynamic && isPending;
+
   const swiperAchievementStyle: CustomCSSProperties = {
     '--swiper-pagination-color': '#393054',
     '--swiper-pagination-bullet-inactive-color': '#fff',
@@ -408,20 +426,23 @@ const ContainerAchievement: React.FC = () => {
               </defs>
             </svg>
           </div>
-          <div className=" flex flex-col items-center">
-            <div className="flex items-center justify-center gap-1 sm:gap-2 bg-gradient-to-b from-brand-deep to-brand-muted border border-white/20 rounded-full px-3 sm:px-4 md:px-6 py-1 sm:py-2 md:py-3 shadow-md">
-              {' '}
-              <Star />
-              <h1 className="font-bold text-white text-xs sm:text-sm md:text-base">
-                OUR PROUDLY
-              </h1>{' '}
-            </div>
+          <div className="flex flex-col items-center gap-6">
+            <CabinetTimeline
+              cabinets={cabinets}
+              activeId={activeCabinetId}
+              onSelect={setActiveCabinetId}
+            />
 
             <h1 className="mt-2 sm:mt-4  text-4xl tracking-[2px] md:text-6xl lg:text-[10rem] font-extrabold bg-gradient-to-b from-white to-muted-foreground bg-clip-text text-transparent leading-tight text-center">
               ACHIEVEMENTS
             </h1>
           </div>
-          <div className="w-[87%] xl:w-[85%] h-[300px] lg:h-[600px] rounded-2xl bg-amber-100 overflow-hidden">
+          <div
+            className={cn(
+              'w-[87%] xl:w-[85%] h-[300px] lg:h-[600px] rounded-2xl bg-amber-100 overflow-hidden',
+              filteredAchievements.length === 0 && 'hidden'
+            )}
+          >
             <Swiper
               style={swiperAchievementStyle}
               navigation
@@ -430,12 +451,10 @@ const ContainerAchievement: React.FC = () => {
               slidesPerView={1}
               loop={true}
               pagination={{ clickable: true }}
-              onSlideChange={(swiper) => console.log(swiper.realIndex)}
-              onSwiper={(swiper) => console.log(swiper)}
               modules={[Navigation, Pagination]}
               slidesPerGroup={1}
             >
-              {achievements.map((achievement: IArticle, i: number) => {
+              {filteredAchievements.map((achievement: IArticle, i: number) => {
                 return (
                   <SwiperSlide key={i} className="mb-14 bg-transparent">
                     <div className=" w-full h-full overflow-hidden relative">
@@ -462,9 +481,23 @@ const ContainerAchievement: React.FC = () => {
             <div className="absolute z-[-5] w-[250px] md:w-[350px] -left-[25%] md:-left-[15%] top-[2100px] animate-logo">
               <WaterElement />
             </div>
-            {achievements.map((achievement: IArticle, i: number) => {
-              return <AchievementPageCard key={i} achievement={achievement} index={i} />;
-            })}
+            {isLoading && <p className="py-16 text-center text-muted-foreground">Memuat data…</p>}
+
+            {isError && (
+              <p className="py-16 text-center text-destructive">
+                Gagal memuat data prestasi{error?.message ? `: ${error.message}` : ''}.
+              </p>
+            )}
+
+            {!isLoading && !isError && filteredAchievements.length === 0 && (
+              <p className="py-16 text-center text-muted-foreground">
+                Belum ada prestasi yang terdata untuk kepengurusan ini.
+              </p>
+            )}
+
+            {filteredAchievements.map((achievement: IArticle, i: number) => (
+              <AchievementPageCard key={achievement.slug} achievement={achievement} index={i} />
+            ))}
           </div>
         </div>
       </main>

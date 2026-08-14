@@ -1,10 +1,34 @@
-import Star from '@/components/svg/events/start';
+'use client';
+
+import { useMemo, useState } from 'react';
 import CardEvent from '@/components/cards/event/Card';
+import CabinetTimeline from '@/core/components/cabinet-timeline';
 import { events } from '@/data/event-list';
+import {
+  cabinets,
+  filterByCabinet,
+  getCabinet,
+  DEFAULT_CABINET_ID,
+} from '@/data/cabinet-list';
+import { useEvents } from '@/services/event/event.query';
 import { IArticle } from '@/types/article.types';
 // import { eventCardData } from '@/configs/event.config';
 
 const EventsComponents: React.FC = () => {
+  const [activeCabinetId, setActiveCabinetId] = useState(DEFAULT_CABINET_ID);
+
+  const isDynamic = getCabinet(activeCabinetId)?.source === 'api';
+
+  // Kabinet dinamis mengambil proker dari backend, kabinet lama tetap dari daftar statis.
+  const { data: apiEvents, isPending, isError, error } = useEvents(isDynamic);
+
+  const filteredEvents = useMemo(
+    () => (isDynamic ? (apiEvents ?? []) : filterByCabinet(events, activeCabinetId)),
+    [isDynamic, apiEvents, activeCabinetId]
+  );
+
+  const isLoading = isDynamic && isPending;
+
   return (
     <div className="w-full min-h-screen flex flex-col items-center xl:pt-[12vh] py-14 xl:pb-20 overflow-hidden gap-10 relative z-0">
       <div className="absolute z-[-5] w-full max-w-[100vw] top-0 lg:top-[25vh] rotate-x-[180deg]">
@@ -332,12 +356,12 @@ const EventsComponents: React.FC = () => {
           </defs>
         </svg>
       </div>
-      <div className=" flex flex-col items-center">
-        <div className="flex items-center justify-center gap-1 sm:gap-2 bg-gradient-to-b from-brand-deep to-brand-muted border border-foreground/20 rounded-full px-3 sm:px-4 md:px-6 py-1 sm:py-2 md:py-3 shadow-md">
-          {' '}
-          <Star />
-          <h1 className="font-bold text-foreground text-xs sm:text-sm md:text-base">THE LATEST</h1>{' '}
-        </div>
+      <div className="flex flex-col items-center gap-6">
+        <CabinetTimeline
+          cabinets={cabinets}
+          activeId={activeCabinetId}
+          onSelect={setActiveCabinetId}
+        />
 
         <h1 className="mt-2 sm:mt-4 text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] font-extrabold bg-gradient-to-b from-foreground to-muted-foreground bg-clip-text text-transparent leading-tight text-center">
           EVENT
@@ -345,16 +369,26 @@ const EventsComponents: React.FC = () => {
       </div>
 
       <div className=" w-[87%] xl:w-[85%] flex flex-col items-center gap-20">
-        {events.map((event: IArticle, i: number) => {
-          return (
-            <>
-              <CardEvent key={i} data={event} isLastItem={i === events.length - 1 ? true : false} />
-              {i !== events.length - 1 && (
+        {isLoading ? (
+          <p className="py-16 text-center text-muted-foreground">Memuat data…</p>
+        ) : isError ? (
+          <p className="py-16 text-center text-destructive">
+            Gagal memuat data kegiatan{error?.message ? `: ${error.message}` : ''}.
+          </p>
+        ) : filteredEvents.length === 0 ? (
+          <p className="py-16 text-center text-muted-foreground">
+            Belum ada kegiatan yang terdata untuk kepengurusan ini.
+          </p>
+        ) : (
+          filteredEvents.map((event: IArticle, i: number) => (
+            <div key={event.slug} className="flex w-full flex-col items-center gap-20">
+              <CardEvent data={event} isLastItem={i === filteredEvents.length - 1} />
+              {i !== filteredEvents.length - 1 && (
                 <div className="w-full h-1 bg-gradient-to-r from-transparent rounded-full via-brand-deep to-transparent"></div>
               )}
-            </>
-          );
-        })}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

@@ -9,11 +9,14 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { ArrowRight } from 'lucide-react';
 import GridEvents from '@/components/svg/events/grid-event';
 import { IArticle } from '@/types/article.types';
-import { events } from '@/data/event-list';
+import { useEvents } from '@/services/event/event.query';
 import Link from 'next/link';
 import Image from 'next/image';
 const Events: React.FC = () => {
   const isMobile = useIsMobile();
+
+  // GET /events sudah menyaring status ComingSoon, jadi yang tampil hanya event yang sudah berjalan.
+  const { data: events = [], isPending } = useEvents();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
@@ -70,55 +73,63 @@ const Events: React.FC = () => {
 
         <div className="w-full flex justify-center">
           <div className=" w-[90%] md:w-[130%] xl:w-[90%]">
-            <Swiper
-              style={swiperEventStyle}
-              navigation
-              className="w-full flex justify-center"
-              spaceBetween={0}
-              slidesPerView={slidePerView}
-              loop={true}
-              pagination={{ clickable: true }}
-              onSlideChange={(swiper) => (
-                setCurrentIndex(swiper.realIndex === events.length - 1 ? -1 : swiper.realIndex),
-                console.log(swiper.realIndex)
-              )}
-              onSwiper={(swiper) => console.log(swiper)}
-              modules={[Navigation, Pagination]}
-              slidesPerGroup={1}
-            >
-              {events.map((event: IArticle, i: number) => {
-                return (
-                  <SwiperSlide key={i} className="mb-14 px-4 sm:px-6 lg:px-3">
-                    <div
-                      className={`w-full h-[400px] lg:h-[550px] bg-surface/30 backdrop-blur-[2px] rounded-2xl p-5 flex flex-col justify-between items-start ${currentIndex + 1 !== i ? 'md:scale-[0.8]' : 'md:scale-x-[1.1]'} duration-300 border-[0.5px] border-foreground/20 group`}
-                    >
-                      <div className=" w-full text-foreground">
-                        <h1 className=" mb-2 text-3xl font-bold">{event.singkatanTitle}</h1>
-                        <p className=" text-lg line-clamp-1">{event.title}</p>
-                      </div>
-
-                      <div className=" w-full h-[50%] overflow-hidden rounded-2xl relative z-0">
-                        <div className="w-full h-full  bg-gradient-to-t from-brand-deep via-brand-deep/20 to-transparent absolute z-[1]"></div>
-                        <Image
-                          src={event.imgUrl}
-                          alt={event.title}
-                          fill
-                          className="w-full h-full object-cover group-hover:scale-[1.1] duration-300"
-                        />
-                      </div>
-
-                      <Link
-                        href={`/event/${event.slug}`}
-                        className=" bg-background/20 py-3 rounded-full px-4 flex items-center justify-center gap-5 font-bold border-[0.5px] border-foreground"
+            {isPending ? (
+              <p className="py-16 text-center text-muted-foreground">Memuat event…</p>
+            ) : events.length === 0 ? (
+              <p className="py-16 text-center text-muted-foreground">
+                Belum ada event yang berjalan.
+              </p>
+            ) : (
+              <Swiper
+                style={swiperEventStyle}
+                navigation
+                className="w-full flex justify-center"
+                spaceBetween={0}
+                slidesPerView={slidePerView}
+                loop={true}
+                pagination={{ clickable: true }}
+                onSlideChange={(swiper) => (
+                  setCurrentIndex(swiper.realIndex === events.length - 1 ? -1 : swiper.realIndex),
+                  console.log(swiper.realIndex)
+                )}
+                onSwiper={(swiper) => console.log(swiper)}
+                modules={[Navigation, Pagination]}
+                slidesPerGroup={1}
+              >
+                {events.map((event: IArticle, i: number) => {
+                  return (
+                    <SwiperSlide key={i} className="mb-14 px-4 sm:px-6 lg:px-3">
+                      <div
+                        className={`w-full h-[400px] lg:h-[550px] bg-surface/30 backdrop-blur-[2px] rounded-2xl p-5 flex flex-col justify-between items-start ${currentIndex + 1 !== i ? 'md:scale-[0.8]' : 'md:scale-x-[1.1]'} duration-300 border-[0.5px] border-foreground/20 group`}
                       >
-                        <span>Selengkapnya</span>
-                        <ArrowRight />
-                      </Link>
-                    </div>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
+                        <div className=" w-full text-foreground">
+                          <h1 className=" mb-2 text-3xl font-bold">{event.singkatanTitle}</h1>
+                          <p className=" text-lg line-clamp-1">{event.title}</p>
+                        </div>
+
+                        <div className=" w-full h-[50%] overflow-hidden rounded-2xl relative z-0">
+                          <div className="w-full h-full  bg-gradient-to-t from-brand-deep via-brand-deep/20 to-transparent absolute z-[1]"></div>
+                          <Image
+                            src={event.imgUrl}
+                            alt={event.title}
+                            fill
+                            className="w-full h-full object-cover group-hover:scale-[1.1] duration-300"
+                          />
+                        </div>
+
+                        <Link
+                          href={`/event/${event.slug}`}
+                          className=" bg-background/20 py-3 rounded-full px-4 flex items-center justify-center gap-5 font-bold border-[0.5px] border-foreground"
+                        >
+                          <span>Selengkapnya</span>
+                          <ArrowRight />
+                        </Link>
+                      </div>
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            )}
           </div>
         </div>
       </div>

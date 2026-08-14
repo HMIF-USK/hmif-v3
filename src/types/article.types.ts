@@ -8,5 +8,7 @@ export interface IArticle {
   tanggal: string;
   lokasi: string;
   waktu: string;
+  /** Tingkat pencapaian (nasional, provinsi, ...) — hanya ada pada data achievement dari API */
+  tingkat?: string;
   deskripsi: string[];
 }

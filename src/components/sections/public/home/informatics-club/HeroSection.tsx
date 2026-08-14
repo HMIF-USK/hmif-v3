@@ -13,17 +13,6 @@ const HeroSectionInformaticClub = () => {
         }}
       />
 
-      <div className="absolute top-8 left-6 md:left-10 z-30 flex items-center w-full">
-        <a
-          href="#"
-          className="px-6 py-1.5 text-[14px] tracking-wide text-[#FFFFFF] bg-[#302443] border border-[#3b2a54] rounded-full hover:bg-[#51436A] transition-all whitespace-nowrap"
-          style={{ fontFamily: 'poppins' }}
-        >
-          Kembali
-        </a>
-        <div className="h-[2px] bg-gradient-to-r from-[#3d2b5c] via-[#1a102f] to-transparent w-[50%] hidden sm:block" />
-      </div>
-
       <div className="relative z-20 w-full max-w-[1100px] flex flex-col items-center justify-center text-center mt-12 mb-28">
         <div
           className="absolute z-10 pointer-events-none w-[200px] sm:w-[280px] md:w-[380px] opacity-90 transform -translate-x-1/2"

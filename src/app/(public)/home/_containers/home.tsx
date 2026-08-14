@@ -132,7 +132,7 @@ export default function ContainerHome() {
                       />
                     </svg>
 
-                    <h1 className="text-white text-2xl md:text-[48px] font-bold">2025</h1>
+                    <h1 className="text-white text-2xl md:text-[48px] font-bold">2026</h1>
                     <svg
                       width="49"
                       height="49"

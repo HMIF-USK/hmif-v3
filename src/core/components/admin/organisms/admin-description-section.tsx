@@ -9,6 +9,7 @@ type AdminDescriptionSectionProps = {
   onChange?: (value: string) => void;
   onSubmit?: () => void;
   isSubmitting?: boolean;
+  submitLabel?: string;
 };
 
 export default function AdminDescriptionSection({
@@ -17,6 +18,7 @@ export default function AdminDescriptionSection({
   onChange,
   onSubmit,
   isSubmitting,
+  submitLabel = "Submit",
 }: AdminDescriptionSectionProps) {
   const bgGradient = "linear-gradient(180deg, #873AE3 170px, #4A207D 450px)";
   const highlightGradient =
@@ -143,7 +145,7 @@ export default function AdminDescriptionSection({
             borderRadius: "18px 8px 18px 8px",
           }}
         >
-          {isSubmitting ? "Menyimpan..." : "Submit"}
+          {isSubmitting ? "Menyimpan..." : submitLabel}
         </button>
       </div>
     </section>

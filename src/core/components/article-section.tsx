@@ -541,8 +541,8 @@ const ArticleSection: React.FC<IArticleSectionProps> = ({ data }) => {
             </svg>
           </div>
           <div className="w-[50%] text-right">
-            <h1 className="font-bold text-xl lg:text-3xl">Waktu</h1>
-            <h1 className="text-base lg:text-lg mt-3">{data.waktu}</h1>
+            <h1 className="font-bold text-xl lg:text-3xl">{data.tingkat ? 'Tingkat' : 'Waktu'}</h1>
+            <h1 className="text-base lg:text-lg mt-3 capitalize">{data.tingkat ?? data.waktu}</h1>
           </div>
         </div>
       </div>

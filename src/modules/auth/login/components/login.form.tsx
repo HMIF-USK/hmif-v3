@@ -1,125 +1,144 @@
 'use client';
+
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import TextField from '@/core/components/text-field';
 import { cn } from '@/utils/classname';
-import { Icon } from '@iconify/react/dist/iconify.js';
+import { Eye, EyeOff, Loader2, Lock, User } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLogin } from '@/services/auth/auth.mutation';
-import { schemaLogin, TLogin } from '@/services/auth/auth.type';
+import { schemaLogin, type TLogin } from '@/services/auth/auth.type';
+
+const fieldClass =
+  'w-full h-12 rounded-xl border border-white/10 bg-white/5 pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-colors focus:border-primary/70 focus:bg-white/10 disabled:opacity-60';
 
 export default function LoginForm() {
-  const loginMutation = useLogin();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { mutateAsync, isPending } = useLogin();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // Hanya terima path internal, supaya ?next= tidak bisa dipakai untuk open redirect.
+  const nextPath = searchParams.get('next');
+  const redirectTo = nextPath?.startsWith('/') && !nextPath.startsWith('//')
+    ? nextPath
+    : '/admin';
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
-    control,
+    register,
     handleSubmit,
+    setFocus,
     formState: { errors },
   } = useForm<TLogin>({
     resolver: zodResolver(schemaLogin),
-    defaultValues: {
-      username: '',
-      password: '',
-    },
+    defaultValues: { username: '', password: '' },
   });
 
   const handleLogin = async (data: TLogin) => {
-    setIsLoading(true);
-    loginMutation.mutateAsync(data, {
-      onSuccess: () => {
-        setIsLoading(false);
-        toast.success('Login successful');
-      },
-      onError: (error) => {
-        setIsLoading(false);
-        toast.error(error?.message || 'Invalid username or password');
-      },
-    });
+    try {
+      await mutateAsync(data);
+      toast.success('Berhasil masuk');
+      router.replace(redirectTo);
+      router.refresh();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Login gagal');
+      setFocus('password');
+    }
   };
 
   return (
-    <Card className={cn('w-full min-w-[320px] max-w-lg mx-auto')}>
-      <CardHeader className={cn('flex items-center justify-center flex-col gap-2')}>
-        <CardTitle className="lg:text-4xl">Login to Labskill</CardTitle>
-      </CardHeader>
+    <div className="w-full max-w-md">
+      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-8 shadow-2xl shadow-black/40 backdrop-blur-xl">
+        <div className="mb-8">
+          <h1 className="font-nasalization text-3xl text-foreground">Masuk</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Gunakan akun HMIF kamu untuk melanjutkan.
+          </p>
+        </div>
 
-      <CardContent>
-        <form noValidate autoComplete="off" onSubmit={handleSubmit(handleLogin)}>
-          <div className="grid w-full items-center gap-1.5 mb-4">
-            <Controller
-              name="username"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Username"
-                  placeholder="Enter your username"
-                  error={errors.username?.message}
-                  disabled={isLoading}
-                />
-              )}
-            />
+        <form noValidate autoComplete="off" onSubmit={handleSubmit(handleLogin)} className="grid gap-5">
+          <div className="grid gap-2">
+            <label htmlFor="username" className="text-sm font-medium text-foreground">
+              Username
+            </label>
+            <div className="relative">
+              <User className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                id="username"
+                autoComplete="username"
+                placeholder="Masukkan username"
+                disabled={isPending}
+                aria-invalid={!!errors.username}
+                aria-describedby={errors.username ? 'username-error' : undefined}
+                className={cn(fieldClass, errors.username && 'border-destructive/70')}
+                {...register('username')}
+              />
+            </div>
+            {errors.username && (
+              <p id="username-error" className="text-sm text-destructive">
+                {errors.username.message}
+              </p>
+            )}
           </div>
 
-          <div className="grid w-full items-center gap-1.5 mb-4">
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="password"
-                  label="Password"
-                  placeholder="Enter your password"
-                  error={errors.password?.message}
-                  forgotPassword
-                  disabled={isLoading}
-                />
-              )}
-            />
+          <div className="grid gap-2">
+            <label htmlFor="password" className="text-sm font-medium text-foreground">
+              Password
+            </label>
+            <div className="relative">
+              <Lock className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                placeholder="Masukkan password"
+                disabled={isPending}
+                aria-invalid={!!errors.password}
+                aria-describedby={errors.password ? 'password-error' : undefined}
+                className={cn(fieldClass, 'pr-12', errors.password && 'border-destructive/70')}
+                {...register('password')}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              </button>
+            </div>
+            {errors.password && (
+              <p id="password-error" className="text-sm text-destructive">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           <Button
             type="submit"
-            variant="default"
-            className={cn('text-sm font-normal mb-4 w-full h-10')}
-            disabled={isLoading}
+            disabled={isPending}
+            className="h-12 w-full rounded-xl text-sm font-semibold"
           >
-            {isLoading ? <Icon icon="eos-icons:three-dots-loading" className="size-5" /> : 'Log in'}
-          </Button>
-
-          <div className="grid grid-cols-7 items-center mb-4">
-            <hr className="col-span-3 border-t border-border" />
-            <p className="col-span-1 text-center text-white">Or</p>
-            <hr className="col-span-3 border-t border-border" />
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            className={cn(
-              'text-sm font-light flex flex-row gap-2 bg-inherit text-white w-full h-10'
+            {isPending ? (
+              <>
+                <Loader2 className="size-4 animate-spin" />
+                Memproses...
+              </>
+            ) : (
+              'Masuk'
             )}
-            disabled={isLoading}
-          >
-            <Icon icon="flat-color-icons:google" />
-            <span>Log in with google</span>
           </Button>
         </form>
-      </CardContent>
+      </div>
 
-      <CardFooter className={cn('flex items-center justify-center text-xs')}>
-        <p className="text-muted-foreground">Don&apos;t have an account?</p>
-        <Link href="/auth/register" className="text-primary font-normal pl-1">
-          Sign up
+      <p className="mt-6 text-center text-sm text-muted-foreground">
+        <Link href="/home" className="transition-colors hover:text-foreground">
+          Kembali ke beranda
         </Link>
-      </CardFooter>
-    </Card>
+      </p>
+    </div>
   );
 }

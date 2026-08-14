@@ -6,114 +6,96 @@ import { authService } from './auth.service';
 import { schemaLogin, type TLogin, type TSession } from './auth.type';
 import { env } from '@/configs/env.config';
 import { APP_SESSION_COOKIE_KEY } from '@/configs/cookies.config';
-import { redirect } from 'next/navigation';
+import { ApiRequestError } from '@/libs/api/types';
 
-const secretKey = env.AUTH_SECRET_KEY;
-const key = new TextEncoder().encode(secretKey);
+const key = new TextEncoder().encode(env.AUTH_SECRET_KEY);
 
-export async function validateSchemaLogin(_prevState: unknown, formData: FormData) {
-  const result = schemaLogin.safeParse({
-    username: formData.get('username'),
-    password: formData.get('password'),
-  });
+// Backend menandatangani token dengan masa berlaku 1 hari, sesi mengikuti.
+const SESSION_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
-  if (result.success === false) {
-    throw new Error('Invalid input');
+export type TLoginResult = { ok: true } | { ok: false; message: string };
+
+/**
+ * Server action login. Sengaja mengembalikan hasil (bukan throw) supaya pesan error
+ * tetap sampai ke client — Next.js menyamarkan error server action di production.
+ */
+export async function login(payload: TLogin): Promise<TLoginResult> {
+  const parsed = schemaLogin.safeParse(payload);
+
+  if (!parsed.success) {
+    return { ok: false, message: 'Username atau password tidak valid' };
   }
 
-  const session = await setSession({ ...result.data });
+  try {
+    const res = await authService.login(parsed.data);
 
-  console.log('session in validateSchemaLogin', session);
-  if (session) {
-    redirect('/home');
+    if (!res?.token) {
+      return { ok: false, message: res?.message || 'Login gagal, coba lagi' };
+    }
+
+    await setSession({ user: res.user, token: res.token });
+
+    return { ok: true };
+  } catch (error) {
+    if (error instanceof ApiRequestError) {
+      return { ok: false, message: error.message };
+    }
+
+    return { ok: false, message: 'Tidak dapat terhubung ke server' };
   }
 }
 
-export async function setSession({ username, password }: TLogin) {
-  const resData = await authService.login({ username, password });
-
-  console.log('resData', resData);
-
-  const token = resData.data?.accessToken;
-  const refreshToken = resData.data?.refreshToken;
-  const user = {
-    id: resData.data?.id,
-    bio: resData.data?.bio,
-    cityId: resData.data?.cityId,
-    countryId: resData.data?.countryId,
-    mentorId: resData.data?.mentorId,
-    name: resData.data?.name,
-    noTelephone: resData.data?.noTelephone,
-    photo: resData.data?.photo,
-    photoOriginal: resData.data?.photoOriginal,
-    photoUrl: resData.data?.photoUrl,
-    provinceId: resData.data?.provinceId,
-    role: resData.data?.role,
-    username: resData.data?.username,
-  };
-
-  const session = {
+export async function setSession({ user, token }: Omit<TSession, 'expires'>) {
+  const session: TSession = {
     user,
     token,
-    refreshToken,
-    expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-  } as TSession;
-
-  const encryptedSession = await encrypt(session);
+    expires: new Date(Date.now() + SESSION_MAX_AGE_MS),
+  };
 
   const cookieStore = await cookies();
 
-  cookieStore.set(APP_SESSION_COOKIE_KEY, encryptedSession, {
+  cookieStore.set(APP_SESSION_COOKIE_KEY, await encrypt(session), {
     expires: session.expires,
     httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
   });
 
   return session;
 }
 
-export async function getSession() {
+export async function getSession(): Promise<TSession | null> {
   const cookieStore = await cookies();
   const session = cookieStore.get(APP_SESSION_COOKIE_KEY)?.value;
 
   if (!session) return null;
 
-  return await decrypt(session);
+  try {
+    return await decrypt(session);
+  } catch {
+    // Tanda tangan rusak atau kedaluwarsa
+    return null;
+  }
 }
 
 export async function getMe() {
-  const session = await getSession();
-
-  return session?.user;
+  return (await getSession())?.user ?? null;
 }
 
 export async function deleteSession() {
   const cookieStore = await cookies();
 
-  if (cookieStore.get(APP_SESSION_COOKIE_KEY)) {
-    cookieStore.delete(APP_SESSION_COOKIE_KEY);
-  }
+  cookieStore.delete(APP_SESSION_COOKIE_KEY);
 }
 
+export async function logout() {
+  await deleteSession();
+}
+
+/** Sesi valid selama JWT-nya belum kedaluwarsa (dicek lokal saat decrypt). */
 export async function authValidator() {
-  const session = await getSession();
-
-  const token = session?.token;
-
-  if (!token) {
-    await deleteSession();
-
-    return false;
-  }
-
-  const isValid = await authService.verifyToken(token);
-
-  if (isValid.data === null) {
-    await deleteSession();
-
-    return false;
-  }
-
-  return true;
+  return (await getSession()) !== null;
 }
 
 export async function encrypt(payload: TSession) {
@@ -125,9 +107,7 @@ export async function encrypt(payload: TSession) {
 }
 
 export async function decrypt(input: string): Promise<TSession> {
-  const { payload } = await jwtVerify(input, key, {
-    algorithms: ['HS256'],
-  });
+  const { payload } = await jwtVerify(input, key, { algorithms: ['HS256'] });
 
-  return payload as TSession;
+  return payload as unknown as TSession;
 }

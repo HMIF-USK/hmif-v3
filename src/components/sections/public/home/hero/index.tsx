@@ -201,7 +201,7 @@ const HeroSection: React.FC = () => {
             key={i}
             className=" font-nasalization text-[100px] tracking-[20px] lg:text-[320px]  lg:tracking-[5vw] lg:mt-[50px] bg-gradient-to-r from-background via-brand-soft to-background bg-clip-text text-transparent"
           >
-            BEYOND
+            AKSARA
           </h1>
         ))}
       </Marquee>

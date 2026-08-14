@@ -12,7 +12,7 @@ export { metadata };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang={siteConfig.locale} suppressHydrationWarning>
+    <html lang={siteConfig.locale} className="dark" suppressHydrationWarning>
       <body className="font-montserrat scrollbar-thumb-rounded-full scrollbar-thin scrollbar-thumb-primary scrollbar-track-background">
         <ThemeProvider>
           <Providers>{children}</Providers>

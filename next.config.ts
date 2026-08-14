@@ -2,6 +2,9 @@ import { env } from '@/configs/env.config';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [{ protocol: 'https', hostname: 'res.cloudinary.com' }],
+  },
   redirects: async () => {
     return [
       {

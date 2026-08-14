@@ -1,15 +1,20 @@
 'use client';
-import BackgroundAchievement from './background';
+import BackgroundAchievement, { ACHIEVEMENT_CARD_SLOTS } from './background';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { CustomCSSProperties } from '@/types/customCSSProperties';
-import { achievements } from '@/data/achievement-list';
+import { useAchievements } from '@/services/achievement/achievement.query';
 import Star from '@/components/svg/events/start';
 import { IArticle } from '@/types/article.types';
 import Link from 'next/link';
 import Image from 'next/image';
 
 const Achievements: React.FC = () => {
+  // Backend mengurutkan achievement dari yang paling baru diunggah (created_at desc).
+  // Jumlahnya mengikuti ring desktop supaya semua layout menampilkan kartu yang sama.
+  const { data } = useAchievements();
+  const achievements = (data ?? []).slice(0, ACHIEVEMENT_CARD_SLOTS.length);
+
   const swiperEventStyle: CustomCSSProperties = {
     '--swiper-pagination-color': '#393054',
     '--swiper-pagination-bullet-inactive-color': '#fff',
@@ -39,35 +44,34 @@ const Achievements: React.FC = () => {
           </div>
 
           <div className=" w-[90%] grid grid-cols-2 gap-10">
-            {achievements.map((achievement: IArticle, i: number) => {
-              if (i < 6) {
-                return (
-                  <div
-                    className={`w-full h-[400px]  bg-surface/30 backdrop-blur-[2px] rounded-2xl p-5 flex flex-col justify-between items-start duration-300 border-[0.5px] border-foreground/20`}
-                  >
-                    <div className=" w-full text-foreground">
-                      <h1 className=" mb-1 text-3xl font-bold">{achievement.singkatanTitle}</h1>
-                      <p className=" text-xl line-clamp-1">{achievement.title}</p>
-                    </div>
-
-                    <div className=" w-full h-[50%] overflow-hidden rounded-2xl relative">
-                      <Image
-                        src={achievement.imgUrl}
-                        alt={achievement.title}
-                        fill
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-
-                    <Link
-                      href={`/achievement/${achievement.slug}`}
-                      className=" bg-background/20 py-3 rounded-full px-4 flex items-center justify-center gap-5 font-bold border-[0.5px] border-foreground"
-                    >
-                      <span>Selengkapnya</span>
-                    </Link>
+            {achievements.map((achievement: IArticle) => {
+              return (
+                <div
+                  key={achievement.slug}
+                  className={`w-full h-[400px]  bg-surface/30 backdrop-blur-[2px] rounded-2xl p-5 flex flex-col justify-between items-start duration-300 border-[0.5px] border-foreground/20`}
+                >
+                  <div className=" w-full text-foreground">
+                    <h1 className=" mb-1 text-3xl font-bold">{achievement.singkatanTitle}</h1>
+                    <p className=" text-xl line-clamp-1">{achievement.title}</p>
                   </div>
-                );
-              }
+
+                  <div className=" w-full h-[50%] overflow-hidden rounded-2xl relative">
+                    <Image
+                      src={achievement.imgUrl}
+                      alt={achievement.title}
+                      fill
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+
+                  <Link
+                    href={`/achievement/${achievement.slug}`}
+                    className=" bg-background/20 py-3 rounded-full px-4 flex items-center justify-center gap-5 font-bold border-[0.5px] border-foreground"
+                  >
+                    <span>Selengkapnya</span>
+                  </Link>
+                </div>
+              );
             })}
           </div>
         </div>

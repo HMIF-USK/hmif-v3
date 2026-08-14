@@ -3,10 +3,10 @@ import HeroSectionInformaticClub from '@/components/sections/public/home/informa
 import InformaticsClub from '@/components/sections/public/home/informatics-club/InformaticsClub';
 const InformaticsClubContainer = () => {
   return (
-    <main className="w-full min-h-screen">
+    <div className="w-full min-h-screen">
       <HeroSectionInformaticClub />
       <InformaticsClub />
-    </main>
+    </div>
   );
 };
 
