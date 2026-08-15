@@ -20,8 +20,12 @@ export async function getMyDepartments(): Promise<TMyDepartments> {
   const isSuperUser = session.user.role === 'superUser';
 
   try {
-    const res = await serverPublicRequest<{ data: TDepartmentResponse[] }>('/departments');
-    const departments = res.data ?? [];
+    const res = await serverPublicRequest<any>('/departments');
+    const departments: TDepartmentResponse[] = Array.isArray(res)
+      ? res
+      : Array.isArray(res?.data)
+      ? res.data
+      : [];
 
     return {
       isSuperUser,
