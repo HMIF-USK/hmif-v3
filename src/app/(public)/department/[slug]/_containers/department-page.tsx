@@ -27,16 +27,36 @@ const ContainerDepartment: React.FC = () => {
   const apiPhotos = apiDepartment?.fotoDepartements || [];
   const staticPhotos = staticDepartment?.photos?.desktop || [];
 
-  const formattedPhotos = requiredSlots.map((slot) => {
-    const foundApi = apiPhotos.find(
+  const formattedPhotos = requiredSlots.map((slot, idx) => {
+    // 1. Exact match
+    let foundApi = apiPhotos.find(
       (p) => p.namaFoto.toUpperCase().trim() === slot.toUpperCase().trim()
     );
-    if (foundApi && foundApi.url) {
-      return { title: foundApi.namaFoto, imgUrl: foundApi.url };
+
+    // 2. Partial match
+    if (!foundApi) {
+      foundApi = apiPhotos.find(
+        (p) =>
+          p.namaFoto.toUpperCase().includes(slot.toUpperCase()) ||
+          slot.toUpperCase().includes(p.namaFoto.toUpperCase())
+      );
     }
-    const foundStatic = staticPhotos.find(
-      (p: any) => p.title.toUpperCase().trim() === slot.toUpperCase().trim()
-    );
+
+    // 3. Index match
+    if (!foundApi && apiPhotos[idx] && apiPhotos[idx].url) {
+      foundApi = apiPhotos[idx];
+    }
+
+    if (foundApi && foundApi.url) {
+      return { title: foundApi.namaFoto || slot, imgUrl: foundApi.url };
+    }
+
+    // Static fallback
+    const foundStatic =
+      staticPhotos.find(
+        (p: any) => p.title.toUpperCase().trim() === slot.toUpperCase().trim()
+      ) || staticPhotos[idx];
+
     return {
       title: slot,
       imgUrl: foundStatic?.imgUrl || '/images/HMIF-No-BG.png',
