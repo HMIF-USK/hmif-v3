@@ -396,7 +396,6 @@ const AppHeader: React.FC = () => {
               )}
             </Link>
           </li>
-          <ThemeToggle />
         </ul>
       </div>
     </div>

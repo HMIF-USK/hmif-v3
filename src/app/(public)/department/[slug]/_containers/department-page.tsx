@@ -17,6 +17,7 @@ import { getDepartmentBySlug, getRequiredPhotoSlots } from '@/data/department-li
 import { useDepartmentBySlug } from '@/services/department/department.query';
 import NotFound from '@/core/components/not-found';
 import Image from 'next/image';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const ContainerDepartment: React.FC = () => {
   const { slug } = useParams();
@@ -79,7 +80,70 @@ const ContainerDepartment: React.FC = () => {
   const isMobile = useIsMobile();
   const [slidePerView, setSlidePerView] = useState<number>(isMobile ? 3 : 5);
   const [currentIndexMobile, setCurrentIndexMobile] = useState<number>(2);
+  const [activeDesktopIndex, setActiveDesktopIndex] = useState<number>(2);
+  const [dragStartX, setDragStartX] = useState<number | null>(null);
   const [prokerIndexActive, setProkerIndexActive] = useState<number | null>(null);
+
+  const desktopPhotosCount = activePhotos.desktop.length;
+
+  const handlePrevDesktop = () => {
+    setActiveDesktopIndex((prev) => (prev === 0 ? desktopPhotosCount - 1 : prev - 1));
+  };
+
+  const handleNextDesktop = () => {
+    setActiveDesktopIndex((prev) => (prev === desktopPhotosCount - 1 ? 0 : prev + 1));
+  };
+
+  const handleTouchStart = (e: React.TouchEvent | React.MouseEvent) => {
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    setDragStartX(clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent | React.MouseEvent) => {
+    if (dragStartX === null) return;
+    const clientX = 'changedTouches' in e ? e.changedTouches[0].clientX : e.clientX;
+    const diffX = clientX - dragStartX;
+
+    if (diffX > 40) {
+      handlePrevDesktop();
+    } else if (diffX < -40) {
+      handleNextDesktop();
+    }
+    setDragStartX(null);
+  };
+
+  const getCardStyle = (index: number, total: number) => {
+    let diff = index - activeDesktopIndex;
+    if (diff > total / 2) diff -= total;
+    if (diff < -total / 2) diff += total;
+
+    if (diff === 0) {
+      return {
+        className:
+          'absolute z-[12] left-1/2 -translate-x-1/2 scale-100 rotate-0 brightness-100 shadow-[0_20px_50px_rgba(0,0,0,0.8)] border-purple-400 cursor-pointer',
+      };
+    } else if (diff === -1) {
+      return {
+        className:
+          'absolute z-[10] left-[32%] -translate-x-1/2 scale-[0.9] -rotate-[3deg] brightness-90 hover:brightness-100 hover:scale-[0.93] cursor-pointer',
+      };
+    } else if (diff === 1) {
+      return {
+        className:
+          'absolute z-[10] left-[68%] -translate-x-1/2 scale-[0.9] rotate-[3deg] brightness-90 hover:brightness-100 hover:scale-[0.93] cursor-pointer',
+      };
+    } else if (diff <= -2) {
+      return {
+        className:
+          'absolute z-[8] left-[16%] -translate-x-1/2 scale-[0.78] translate-y-[20px] -rotate-[6deg] brightness-75 hover:brightness-100 hover:scale-[0.82] cursor-pointer',
+      };
+    } else {
+      return {
+        className:
+          'absolute z-[8] left-[84%] -translate-x-1/2 scale-[0.78] translate-y-[20px] rotate-[6deg] brightness-75 hover:brightness-100 hover:scale-[0.82] cursor-pointer',
+      };
+    }
+  };
   const swiperEventStyle: CustomCSSProperties = !isMobile
     ? {
         '--swiper-pagination-color': '#393054',
@@ -346,26 +410,62 @@ const ContainerDepartment: React.FC = () => {
           <div className="absolute z-[1] top-[4%] lg:top-[7%] w-[200px] sm:w-[300px] lg:w-[700px] animate-logo">
             <GlassElement />
           </div>
-          {/* Glass Element */}
-          <div className="w-full flex justify-center overflow-hidden">
-            <div className="hidden  w-full sm:flex items-center justify-center relative h-[220px] lg:h-[400px]">
+          {/* Swipable 3D Card Fan Gallery for Desktop */}
+          <div className="w-full flex justify-center overflow-hidden py-6">
+            <div
+              className="hidden w-full sm:flex items-center justify-center relative h-[240px] lg:h-[420px] max-w-[1300px] mx-auto select-none"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              onMouseDown={handleTouchStart}
+              onMouseUp={handleTouchEnd}
+            >
+              {/* Floating Navigation Arrow Left */}
+              <button
+                type="button"
+                onClick={handlePrevDesktop}
+                className="absolute left-4 lg:left-8 z-[30] p-3 rounded-full bg-black/40 border border-white/20 text-white backdrop-blur-md shadow-xl hover:bg-white/20 transition-all active:scale-90 cursor-pointer"
+                aria-label="Previous Photo"
+              >
+                <ChevronLeft className="size-6 lg:size-8" />
+              </button>
+
               {department.photos.desktop.map((item: any, i: number) => {
+                const cardStyle = getCardStyle(i, desktopPhotosCount);
+                const isActive = i === activeDesktopIndex;
                 return (
                   <div
-                    className={`w-[220px] h-[220px] lg:w-[400px] lg:h-[400px] ${styleImgHeader[i]?.className}  rounded-2xl border-[1px] border-border overflow-hidden group`}
+                    key={i}
+                    onClick={() => setActiveDesktopIndex(i)}
+                    className={`w-[220px] h-[220px] lg:w-[400px] lg:h-[400px] rounded-2xl border border-white/20 overflow-hidden group transition-all duration-500 ease-out ${cardStyle.className}`}
                   >
                     <Image
                       src={item.imgUrl}
                       alt={item.title}
                       fill
-                      className="object-cover group-hover:scale-[1.1] duration-300"
+                      className="object-cover group-hover:scale-[1.08] transition-transform duration-500"
                     />
-                    <div className=" w-full h-full absolute inset-0 z-[11] bg-gradient-to-t from-brand-deep/80 via-brand-deep/20 to-black/30 p-5 flex items-end justify-center font-nasalization text-2xl uppercase">
-                      <h1>{item.title}</h1>
+                    <div
+                      className={`w-full h-full absolute inset-0 z-[11] bg-gradient-to-t from-brand-deep/80 via-brand-deep/20 to-black/30 p-5 flex items-end justify-center font-nasalization text-2xl uppercase transition-opacity duration-300 ${
+                        isActive ? 'opacity-100' : 'opacity-80 group-hover:opacity-100'
+                      }`}
+                    >
+                      <h1 className="text-white text-center drop-shadow-md tracking-wider">
+                        {item.title}
+                      </h1>
                     </div>
                   </div>
                 );
               })}
+
+              {/* Floating Navigation Arrow Right */}
+              <button
+                type="button"
+                onClick={handleNextDesktop}
+                className="absolute right-4 lg:right-8 z-[30] p-3 rounded-full bg-black/40 border border-white/20 text-white backdrop-blur-md shadow-xl hover:bg-white/20 transition-all active:scale-90 cursor-pointer"
+                aria-label="Next Photo"
+              >
+                <ChevronRight className="size-6 lg:size-8" />
+              </button>
             </div>
 
             <div className=" w-[240%] sm:hidden ">
