@@ -113,15 +113,12 @@ export default function ManageDepartmentPage() {
   }, [selectedSlug, apiDepartments]);
 
   const handleSaveDescription = async () => {
-    if (!selectedDept?.id) {
-      alert('Departemen ini belum terdaftar di database backend.');
-      return;
-    }
+    const targetIdOrSlug = selectedDept?.id || selectedSlug;
 
     setIsSavingDesc(true);
     try {
       const res = await updateDepartmentDetails({
-        id: selectedDept.id,
+        id: targetIdOrSlug,
         description,
         slug: selectedSlug,
       });
@@ -158,26 +155,23 @@ export default function ManageDepartmentPage() {
   };
 
   const handleSavePhotos = async () => {
-    if (!selectedDept?.id) {
-      alert('Departemen ini belum terdaftar di database backend.');
-      return;
-    }
+    const targetIdOrSlug = selectedDept?.id || selectedSlug;
 
     setIsSavingPhotos(true);
     try {
       const res = await syncDepartmentPhotos(
-        selectedDept.id,
+        targetIdOrSlug,
         photos.map((p) => ({ namaFoto: p.namaFoto, url: p.url }))
       );
 
       if (res.ok) {
-        alert(`Foto-foto departemen ${selectedDept.name} berhasil disimpan dan diperbarui di publik!`);
+        alert(`Foto-foto departemen ${selectedDept?.name || selectedSlug.toUpperCase()} berhasil disimpan dan diperbarui di publik!`);
         refetch();
       } else {
         alert(res.message || 'Gagal menyinkronkan foto departemen');
       }
-    } catch {
-      alert('Terjadi kesalahan saat menyimpan foto');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Terjadi kesalahan saat menyimpan foto');
     } finally {
       setIsSavingPhotos(false);
     }
@@ -191,31 +185,33 @@ export default function ManageDepartmentPage() {
 
       {isLoading && <EmptyState text="Memuat data departemen..." />}
 
-      {/* Select Department Tabs */}
-      <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-white/20 bg-white/10 p-3 backdrop-blur-xl">
-        <div className="flex items-center gap-1.5 px-3 py-1 bg-white/10 rounded-lg text-xs font-semibold text-purple-300 mr-2">
-          {isSuperUser ? <ShieldCheck className="size-4 text-emerald-400" /> : <Lock className="size-4 text-amber-400" />}
-          <span>{isSuperUser ? 'Super Admin Access' : 'Akses Departemen'}</span>
-        </div>
+      {/* Select Department Tabs - Only visible for Super Admin */}
+      {isSuperUser && (
+        <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-white/20 bg-white/10 p-3 backdrop-blur-xl">
+          <div className="flex items-center gap-1.5 px-3 py-1 bg-white/10 rounded-lg text-xs font-semibold text-purple-300 mr-2">
+            <ShieldCheck className="size-4 text-emerald-400" />
+            <span>Super Admin Access</span>
+          </div>
 
-        {allowedDepartments.map((dept) => {
-          const isSelected = dept.slug === selectedSlug;
-          return (
-            <button
-              key={dept.slug}
-              type="button"
-              onClick={() => setSelectedSlug(dept.slug)}
-              className={`rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-300 ${
-                isSelected
-                  ? 'bg-gradient-to-r from-violet-600 to-purple-800 text-white shadow-lg scale-105'
-                  : 'bg-white/5 text-violet-200 hover:bg-white/15'
-              }`}
-            >
-              {dept.name}
-            </button>
-          );
-        })}
-      </div>
+          {allowedDepartments.map((dept) => {
+            const isSelected = dept.slug === selectedSlug;
+            return (
+              <button
+                key={dept.slug}
+                type="button"
+                onClick={() => setSelectedSlug(dept.slug)}
+                className={`rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-300 ${
+                  isSelected
+                    ? 'bg-gradient-to-r from-violet-600 to-purple-800 text-white shadow-lg scale-105'
+                    : 'bg-white/5 text-violet-200 hover:bg-white/15'
+                }`}
+              >
+                {dept.name}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {selectedDept && (
         <div className="space-y-8">

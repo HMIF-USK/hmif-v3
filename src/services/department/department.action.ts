@@ -54,7 +54,7 @@ export async function updateDepartmentDetails({
   }
 
   try {
-    await serverPublicRequest(`/departments/${id}`, {
+    await serverPublicRequest(`/departments/${encodeURIComponent(id)}`, {
       method: 'PUT',
       body: { name, description, slug },
       headers: { Authorization: `Bearer ${session.token}` },
@@ -67,7 +67,7 @@ export async function updateDepartmentDetails({
 }
 
 export async function syncDepartmentPhotos(
-  departmentId: string,
+  departmentIdOrSlug: string,
   photos: { url: string; namaFoto: string }[]
 ): Promise<TActionResult> {
   const session = await getSession();
@@ -77,7 +77,7 @@ export async function syncDepartmentPhotos(
   }
 
   try {
-    await serverPublicRequest(`/departments/${departmentId}/photos`, {
+    await serverPublicRequest(`/departments/${encodeURIComponent(departmentIdOrSlug)}/photos`, {
       method: 'PUT',
       body: { photos },
       headers: { Authorization: `Bearer ${session.token}` },
