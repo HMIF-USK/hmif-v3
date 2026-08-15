@@ -30,12 +30,20 @@ export const departmentList: IDepartment[] = [
           imgUrl: '/images/department/dph/sekretaris.JPG',
         },
         {
-          title: 'KETUA & WAKIL',
+          title: 'BENDUM & WABENDUM',
+          imgUrl: '/images/department/dph/bendahara.JPG',
+        },
+        {
+          title: 'KETUA',
           imgUrl: '/images/department/dph/ketua.JPG',
         },
         {
-          title: 'BENDUM & WABENDUM',
-          imgUrl: '/images/department/dph/bendahara.JPG',
+          title: 'WAKIL I',
+          imgUrl: '/images/department/dph/wakil1.JPG',
+        },
+        {
+          title: 'WAKIL II',
+          imgUrl: '/images/department/dph/wakil2.JPG',
         },
       ],
       mobile: [
@@ -44,12 +52,20 @@ export const departmentList: IDepartment[] = [
           imgUrl: '/images/department/dph/sekretaris.JPG',
         },
         {
-          title: 'KETUA & WAKIL',
+          title: 'BENDUM & WABENDUM',
+          imgUrl: '/images/department/dph/bendahara.JPG',
+        },
+        {
+          title: 'KETUA',
           imgUrl: '/images/department/dph/ketua.JPG',
         },
         {
-          title: 'BENDUM & WABENDUM',
-          imgUrl: '/images/department/dph/bendahara.JPG',
+          title: 'WAKIL I',
+          imgUrl: '/images/department/dph/wakil1.JPG',
+        },
+        {
+          title: 'WAKIL II',
+          imgUrl: '/images/department/dph/wakil2.JPG',
         },
       ],
     },
@@ -674,8 +690,10 @@ export const getDepartmentBySlug = (slug: string): IDepartment | undefined => {
 
 export const DPH_PHOTO_SLOTS = [
   'SEKUM & WASEKUM',
-  'KETUA & WAKIL',
   'BENDUM & WABENDUM',
+  'KETUA',
+  'WAKIL I',
+  'WAKIL II',
 ];
 
 export const REGULAR_PHOTO_SLOTS = [

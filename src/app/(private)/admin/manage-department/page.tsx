@@ -265,7 +265,7 @@ export default function ManageDepartmentPage() {
                   <h3 className="text-xl font-bold text-white">Kelola Template Foto ({requiredSlots.length} Card)</h3>
                   <p className="text-xs text-purple-300">
                     {selectedSlug === 'dph'
-                      ? 'Template DPH: SEKUM & WASEKUM, KETUA & WAKIL, BENDUM & WABENDUM'
+                      ? 'Template DPH: SEKUM & WASEKUM, BENDUM & WABENDUM, KETUA, WAKIL I, WAKIL II'
                       : 'Template Departemen: FULLTEAM, KETUA, WAKIL, SEKRETARIS, ANGGOTA'}
                   </p>
                 </div>
@@ -282,7 +282,7 @@ export default function ManageDepartmentPage() {
             </div>
 
             {/* Grid of Fixed Template Photo Cards */}
-            <div className={`grid grid-cols-1 md:grid-cols-2 ${selectedSlug === 'dph' ? 'lg:grid-cols-3' : 'lg:grid-cols-3 xl:grid-cols-5'} gap-6`}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
               {photos.map((item, index) => {
                 const isUploading = uploadingIndex === index;
                 return (
