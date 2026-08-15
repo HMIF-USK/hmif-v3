@@ -11,10 +11,12 @@ import { useDepartments } from '@/services/department/department.query';
 import {
   updateDepartmentDetails,
   syncDepartmentPhotos,
+  getMyDepartments,
 } from '@/services/department/department.action';
 import type { TDepartmentResponse } from '@/services/department/department.type';
 import { departmentList, getRequiredPhotoSlots } from '@/data/department-list';
-import { Save, Image as ImageIcon, Sparkles, Building2, Upload } from 'lucide-react';
+import { uploadImage } from '@/libs/upload/cloudinary';
+import { Save, Image as ImageIcon, Sparkles, Building2, Upload, Loader2, ShieldCheck, Lock } from 'lucide-react';
 
 const DEFAULT_DEPARTMENTS = departmentList.map((d) => ({
   slug: d.slug,
@@ -24,6 +26,9 @@ const DEFAULT_DEPARTMENTS = departmentList.map((d) => ({
 
 export default function ManageDepartmentPage() {
   const { data: apiDepartments = [], isLoading, refetch } = useDepartments();
+
+  const [isSuperUser, setIsSuperUser] = useState<boolean>(true);
+  const [allowedDepartments, setAllowedDepartments] = useState<typeof DEFAULT_DEPARTMENTS>(DEFAULT_DEPARTMENTS);
   const [selectedSlug, setSelectedSlug] = useState<string>('ppm');
   const [selectedDept, setSelectedDept] = useState<TDepartmentResponse | null>(null);
 
@@ -31,8 +36,33 @@ export default function ManageDepartmentPage() {
   const [description, setDescription] = useState<string>('');
   const [photos, setPhotos] = useState<{ id?: string; namaFoto: string; url: string }[]>([]);
 
+  const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
   const [isSavingDesc, setIsSavingDesc] = useState<boolean>(false);
   const [isSavingPhotos, setIsSavingPhotos] = useState<boolean>(false);
+
+  // Fetch current user's permitted departments
+  useEffect(() => {
+    async function loadPermissions() {
+      const res = await getMyDepartments();
+      setIsSuperUser(res.isSuperUser);
+
+      if (res.isSuperUser) {
+        setAllowedDepartments(DEFAULT_DEPARTMENTS);
+      } else if (res.departments.length > 0) {
+        const allowedSlugs = new Set(
+          res.departments.map((d) => (d.slug || d.name).toLowerCase())
+        );
+        const filtered = DEFAULT_DEPARTMENTS.filter((d) =>
+          allowedSlugs.has(d.slug.toLowerCase()) || allowedSlugs.has(d.name.toLowerCase())
+        );
+        setAllowedDepartments(filtered.length > 0 ? filtered : DEFAULT_DEPARTMENTS);
+        if (filtered.length > 0) {
+          setSelectedSlug(filtered[0].slug);
+        }
+      }
+    }
+    loadPermissions();
+  }, []);
 
   // Combine API departments with static list
   const activeDepartments = DEFAULT_DEPARTMENTS.map((def) => {
@@ -56,8 +86,6 @@ export default function ManageDepartmentPage() {
       setDescription(current.description || '');
 
       const requiredSlots = getRequiredPhotoSlots(selectedSlug);
-
-      // Load photos from API or fallback
       const apiFotoList = current.fotoDepartements || [];
       const staticData = departmentList.find((d) => d.slug === selectedSlug);
       const staticPhotos = (staticData?.photos?.desktop || []).map((p) => ({
@@ -70,7 +98,7 @@ export default function ManageDepartmentPage() {
         const foundApi = apiFotoList.find(
           (p) => p.namaFoto.toUpperCase().trim() === slot.toUpperCase().trim()
         );
-        if (foundApi) {
+        if (foundApi && foundApi.url) {
           return { id: foundApi.id, namaFoto: slot, url: foundApi.url };
         }
 
@@ -86,7 +114,7 @@ export default function ManageDepartmentPage() {
 
   const handleSaveDescription = async () => {
     if (!selectedDept?.id) {
-      alert('Departemen ini belum terdaftar di database backend. Silakan buat departemen via backend.');
+      alert('Departemen ini belum terdaftar di database backend.');
       return;
     }
 
@@ -117,6 +145,18 @@ export default function ManageDepartmentPage() {
     setPhotos(updated);
   };
 
+  const handleFileUpload = async (index: number, file: File) => {
+    setUploadingIndex(index);
+    try {
+      const cloudinaryUrl = await uploadImage(file);
+      handlePhotoUrlChange(index, cloudinaryUrl);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Gagal mengunggah foto ke Cloudinary');
+    } finally {
+      setUploadingIndex(null);
+    }
+  };
+
   const handleSavePhotos = async () => {
     if (!selectedDept?.id) {
       alert('Departemen ini belum terdaftar di database backend.');
@@ -131,7 +171,7 @@ export default function ManageDepartmentPage() {
       );
 
       if (res.ok) {
-        alert(`Foto-foto departemen ${selectedDept.name} berhasil disimpan!`);
+        alert(`Foto-foto departemen ${selectedDept.name} berhasil disimpan dan diperbarui di publik!`);
         refetch();
       } else {
         alert(res.message || 'Gagal menyinkronkan foto departemen');
@@ -152,8 +192,13 @@ export default function ManageDepartmentPage() {
       {isLoading && <EmptyState text="Memuat data departemen..." />}
 
       {/* Select Department Tabs */}
-      <div className="flex flex-wrap gap-2 rounded-2xl border border-white/20 bg-white/10 p-3 backdrop-blur-xl">
-        {DEFAULT_DEPARTMENTS.map((dept) => {
+      <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-white/20 bg-white/10 p-3 backdrop-blur-xl">
+        <div className="flex items-center gap-1.5 px-3 py-1 bg-white/10 rounded-lg text-xs font-semibold text-purple-300 mr-2">
+          {isSuperUser ? <ShieldCheck className="size-4 text-emerald-400" /> : <Lock className="size-4 text-amber-400" />}
+          <span>{isSuperUser ? 'Super Admin Access' : 'Akses Departemen'}</span>
+        </div>
+
+        {allowedDepartments.map((dept) => {
           const isSelected = dept.slug === selectedSlug;
           return (
             <button
@@ -232,7 +277,7 @@ export default function ManageDepartmentPage() {
               <button
                 type="button"
                 onClick={handleSavePhotos}
-                disabled={isSavingPhotos}
+                disabled={isSavingPhotos || uploadingIndex !== null}
                 className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-2.5 font-bold text-white shadow-lg hover:brightness-110 active:scale-95 disabled:opacity-50"
               >
                 <Sparkles className="size-4" />
@@ -242,66 +287,71 @@ export default function ManageDepartmentPage() {
 
             {/* Grid of Fixed Template Photo Cards */}
             <div className={`grid grid-cols-1 md:grid-cols-2 ${selectedSlug === 'dph' ? 'lg:grid-cols-3' : 'lg:grid-cols-3 xl:grid-cols-5'} gap-6`}>
-              {photos.map((item, index) => (
-                <div
-                  key={item.namaFoto}
-                  className="group relative overflow-hidden rounded-2xl border border-purple-500/30 bg-black/50 p-4 transition-all hover:border-purple-400 space-y-3"
-                >
-                  <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                    <span className="font-extrabold text-purple-300 uppercase tracking-wider text-xs bg-purple-900/60 px-2.5 py-1 rounded-md">
-                      CARD {index + 1}: {item.namaFoto}
-                    </span>
-                  </div>
+              {photos.map((item, index) => {
+                const isUploading = uploadingIndex === index;
+                return (
+                  <div
+                    key={item.namaFoto}
+                    className="group relative overflow-hidden rounded-2xl border border-purple-500/30 bg-black/50 p-4 transition-all hover:border-purple-400 space-y-3"
+                  >
+                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                      <span className="font-extrabold text-purple-300 uppercase tracking-wider text-xs bg-purple-900/60 px-2.5 py-1 rounded-md">
+                        CARD {index + 1}: {item.namaFoto}
+                      </span>
+                    </div>
 
-                  {/* Image Preview Box */}
-                  <div className="relative h-44 w-full overflow-hidden rounded-xl bg-black/60 border border-white/10 flex items-center justify-center">
-                    {item.url ? (
-                      <Image
-                        src={item.url}
-                        alt={item.namaFoto}
-                        fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    {/* Image Preview Box */}
+                    <div className="relative h-44 w-full overflow-hidden rounded-xl bg-black/60 border border-white/10 flex items-center justify-center">
+                      {isUploading ? (
+                        <div className="flex flex-col items-center gap-2 text-purple-300">
+                          <Loader2 className="size-8 animate-spin text-purple-400" />
+                          <span className="text-xs font-semibold">Mengunggah ke Cloudinary...</span>
+                        </div>
+                      ) : item.url ? (
+                        <Image
+                          src={item.url}
+                          alt={item.namaFoto}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="text-center p-4">
+                          <Upload className="size-8 text-purple-400/60 mx-auto mb-1" />
+                          <span className="text-xs text-purple-300/70 font-semibold">Belum ada foto ({item.namaFoto})</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* URL Input */}
+                    <div>
+                      <label className="block text-[11px] font-semibold text-purple-200 mb-1">URL Foto (Cloudinary / Path):</label>
+                      <input
+                        type="text"
+                        value={item.url}
+                        onChange={(e) => handlePhotoUrlChange(index, e.target.value)}
+                        placeholder="https://res.cloudinary.com/..."
+                        className="w-full rounded-lg border border-white/20 bg-black/40 px-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-400"
                       />
-                    ) : (
-                      <div className="text-center p-4">
-                        <Upload className="size-8 text-purple-400/60 mx-auto mb-1" />
-                        <span className="text-xs text-purple-300/70 font-semibold">Belum ada foto ({item.namaFoto})</span>
-                      </div>
-                    )}
-                  </div>
+                    </div>
 
-                  {/* URL Input */}
-                  <div>
-                    <label className="block text-[11px] font-semibold text-purple-200 mb-1">URL Foto / Path Gambar:</label>
-                    <input
-                      type="text"
-                      value={item.url}
-                      onChange={(e) => handlePhotoUrlChange(index, e.target.value)}
-                      placeholder="/images/department/..."
-                      className="w-full rounded-lg border border-white/20 bg-black/40 px-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-400"
-                    />
+                    {/* File Upload Input */}
+                    <div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        disabled={isUploading}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            handleFileUpload(index, file);
+                          }
+                        }}
+                        className="text-[10px] text-purple-300 file:mr-2 file:rounded-md file:border-0 file:bg-purple-700/80 file:px-2.5 file:py-1 file:text-[10px] file:font-semibold file:text-white hover:file:bg-purple-600 disabled:opacity-50"
+                      />
+                    </div>
                   </div>
-
-                  {/* File Upload Input */}
-                  <div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const reader = new FileReader();
-                          reader.onloadend = () => {
-                            handlePhotoUrlChange(index, reader.result as string);
-                          };
-                          reader.readAsDataURL(file);
-                        }
-                      }}
-                      className="text-[10px] text-purple-300 file:mr-2 file:rounded-md file:border-0 file:bg-purple-700/80 file:px-2.5 file:py-1 file:text-[10px] file:font-semibold file:text-white hover:file:bg-purple-600"
-                    />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
