@@ -26,46 +26,30 @@ export const departmentList: IDepartment[] = [
     photos: {
       desktop: [
         {
-          title: 'bendahara',
-          imgUrl: '/images/department/dph/bendahara.JPG',
+          title: 'SEKUM & WASEKUM',
+          imgUrl: '/images/department/dph/sekretaris.JPG',
         },
         {
-          title: 'wakil ii',
-          imgUrl: '/images/department/dph/wakil2.JPG',
-        },
-        {
-          title: 'ketua',
+          title: 'KETUA & WAKIL',
           imgUrl: '/images/department/dph/ketua.JPG',
         },
         {
-          title: 'wakil i',
-          imgUrl: '/images/department/dph/wakil1.JPG',
-        },
-        {
-          title: 'sekretaris',
-          imgUrl: '/images/department/dph/sekretaris.JPG',
+          title: 'BENDUM & WABENDUM',
+          imgUrl: '/images/department/dph/bendahara.JPG',
         },
       ],
       mobile: [
         {
-          title: 'bendahara',
-          imgUrl: '/images/department/dph/bendahara.JPG',
+          title: 'SEKUM & WASEKUM',
+          imgUrl: '/images/department/dph/sekretaris.JPG',
         },
         {
-          title: 'ketua',
+          title: 'KETUA & WAKIL',
           imgUrl: '/images/department/dph/ketua.JPG',
         },
         {
-          title: 'wakil i',
-          imgUrl: '/images/department/dph/wakil1.JPG',
-        },
-        {
-          title: 'wakil ii',
-          imgUrl: '/images/department/dph/wakil2.JPG',
-        },
-        {
-          title: 'sekretaris',
-          imgUrl: '/images/department/dph/sekretaris.JPG',
+          title: 'BENDUM & WABENDUM',
+          imgUrl: '/images/department/dph/bendahara.JPG',
         },
       ],
     },
@@ -687,3 +671,22 @@ export const department = new Map<string, IDepartment>(
 export const getDepartmentBySlug = (slug: string): IDepartment | undefined => {
   return department.get(slug);
 };
+
+export const DPH_PHOTO_SLOTS = [
+  'SEKUM & WASEKUM',
+  'KETUA & WAKIL',
+  'BENDUM & WABENDUM',
+];
+
+export const REGULAR_PHOTO_SLOTS = [
+  'FULLTEAM',
+  'KETUA',
+  'WAKIL',
+  'SEKRETARIS',
+  'ANGGOTA',
+];
+
+export const getRequiredPhotoSlots = (slug: string): string[] => {
+  return slug?.toLowerCase() === 'dph' ? DPH_PHOTO_SLOTS : REGULAR_PHOTO_SLOTS;
+};
+

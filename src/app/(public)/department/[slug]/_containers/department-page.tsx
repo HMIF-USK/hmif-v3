@@ -13,13 +13,49 @@ import Marquee from 'react-fast-marquee';
 import GlassElementDivisionOne from '@/components/svg/department/glass-element-division-one';
 import GlassElementDivisionTwo from '@/components/svg/department/glass-element-division-two';
 import ProkerElement from '@/components/svg/department/proker-element';
-import { getDepartmentBySlug } from '@/data/department-list';
+import { getDepartmentBySlug, getRequiredPhotoSlots } from '@/data/department-list';
+import { useDepartmentBySlug } from '@/services/department/department.query';
 import NotFound from '@/core/components/not-found';
 import Image from 'next/image';
 
 const ContainerDepartment: React.FC = () => {
   const { slug } = useParams();
-  const department = getDepartmentBySlug(slug as string);
+  const staticDepartment = getDepartmentBySlug(slug as string);
+  const { data: apiDepartment } = useDepartmentBySlug(slug as string);
+
+  const requiredSlots = getRequiredPhotoSlots(slug as string);
+  const apiPhotos = apiDepartment?.fotoDepartements || [];
+  const staticPhotos = staticDepartment?.photos?.desktop || [];
+
+  const formattedPhotos = requiredSlots.map((slot) => {
+    const foundApi = apiPhotos.find(
+      (p) => p.namaFoto.toUpperCase().trim() === slot.toUpperCase().trim()
+    );
+    if (foundApi && foundApi.url) {
+      return { title: foundApi.namaFoto, imgUrl: foundApi.url };
+    }
+    const foundStatic = staticPhotos.find(
+      (p: any) => p.title.toUpperCase().trim() === slot.toUpperCase().trim()
+    );
+    return {
+      title: slot,
+      imgUrl: foundStatic?.imgUrl || '/images/HMIF-No-BG.png',
+    };
+  });
+
+  const activePhotos = {
+    desktop: formattedPhotos,
+    mobile: formattedPhotos,
+  };
+
+  const department = staticDepartment
+    ? {
+        ...staticDepartment,
+        departmentName: apiDepartment?.name || staticDepartment.departmentName,
+        shortDesc: apiDepartment?.description || staticDepartment.shortDesc,
+        photos: activePhotos,
+      }
+    : null;
   const isMobile = useIsMobile();
   const [slidePerView, setSlidePerView] = useState<number>(isMobile ? 3 : 5);
   const [currentIndexMobile, setCurrentIndexMobile] = useState<number>(2);
@@ -44,7 +80,7 @@ const ContainerDepartment: React.FC = () => {
         '--swiper-navigation-sides-offset': '0px',
       };
 
-  const styleImgHeader: { className: string }[] = [
+  const styleImgHeader5Cards: { className: string }[] = [
     {
       className:
         'absolute z-[8] scale-[0.75] lg:scale-[0.8] left-[10%] translate-y-[20px] -rotate-[5deg]',
@@ -63,6 +99,21 @@ const ContainerDepartment: React.FC = () => {
         'absolute z-[8] scale-[0.75] lg:scale-[0.8] right-[10%] translate-y-[20px] rotate-[5deg]',
     },
   ];
+
+  const styleImgHeader3Cards: { className: string }[] = [
+    {
+      className: 'absolute z-[9] left-[18%] scale-[0.9] -rotate-[4deg]',
+    },
+    {
+      className: 'absolute z-[10]',
+    },
+    {
+      className: 'absolute z-[9] right-[18%] scale-[0.9] rotate-[4deg]',
+    },
+  ];
+
+  const styleImgHeader =
+    formattedPhotos.length === 3 ? styleImgHeader3Cards : styleImgHeader5Cards;
 
   useEffect(() => {
     setSlidePerView(isMobile ? 3 : 7);

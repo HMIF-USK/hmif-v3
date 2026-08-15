@@ -43,6 +43,11 @@ export const adminNavItems = [
     href: '/admin/manage-informatic-club',
     requires: 'informatic-club',
   },
+  {
+    id: 'manage-department',
+    label: 'KELOLA DEPARTEMEN',
+    href: '/admin/manage-department',
+  },
 ] as const;
 
 export type AdminNavItem = (typeof adminNavItems)[number];

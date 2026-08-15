@@ -48,16 +48,20 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   keywords: siteConfig.keywords,
   icons: {
-    icon: [{ url: '/images/HMIF-No-BG.png', type: 'image/png' }, { url: '/favicon/favicon.ico' }],
-    shortcut: '/images/HMIF-No-BG.png',
-    apple: [
+    icon: [
+      { url: '/favicon/web-app-manifest-192x192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/favicon/web-app-manifest-512x512.png', type: 'image/png', sizes: '512x512' },
       { url: '/images/HMIF-No-BG.png', type: 'image/png' },
-      { url: '/images/HMIF-No-BG.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: '/favicon/web-app-manifest-192x192.png',
+    apple: [
+      { url: '/favicon/apple-touch-icon.png', type: 'image/png' },
+      { url: '/favicon/web-app-manifest-192x192.png', sizes: '180x180', type: 'image/png' },
     ],
     other: [
       {
         rel: 'mask-icon',
-        url: '/images/HMIF-No-BG.png',
+        url: '/favicon/web-app-manifest-512x512.png',
         color: '#000000',
       },
     ],
